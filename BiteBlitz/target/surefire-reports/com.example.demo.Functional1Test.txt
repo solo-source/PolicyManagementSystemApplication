@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.example.demo.Functional1Test
--------------------------------------------------------------------------------
-Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 12.954 s - in com.example.demo.Functional1Test
