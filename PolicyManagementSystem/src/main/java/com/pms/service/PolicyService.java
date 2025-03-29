@@ -77,7 +77,7 @@ public class PolicyService {
         if (policy.getPolicyStatus() == null ||
             (policy.getPolicyStatus() != PolicyStatus.ACTIVE &&
              policy.getPolicyStatus() != PolicyStatus.INACTIVE)) {
-            throw new IllegalArgumentException("Policy status must be either ACTIVE or DEACTIVATED.");
+            throw new IllegalArgumentException("Policy status must be either ACTIVE or INACTIVE.");
         }
      // Validate AnnuityTerm using enum comparison
         if (policy.getAnnuityTerm() == null ||
