@@ -33,7 +33,7 @@ public class Policy {
     private Double totalPremiumAmount;
 
     @Column(name = "maturity_amount", nullable = false)
-    @Positive(message = "Number of years must be positive")
+    @Positive(message = "Maturity Amount must be positive")
     private Double maturityAmount;
 
     @Column(name = "policy_term")
