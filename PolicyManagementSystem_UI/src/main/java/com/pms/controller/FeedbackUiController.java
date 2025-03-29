@@ -51,50 +51,50 @@ public class FeedbackUiController {
     }
     
     
-//    @GetMapping("/update")
-//    public String showUpdateForm(@RequestParam("schemeId") int schemeId, 
-//                                 @RequestParam("customerId") int customerId, 
-////                                 Model model) {
-////        Feedback feedback = new Feedback();
-////        Scheme scheme = new Scheme();
-////        scheme.setSchemeId(schemeId);
-////        Customer customer = new Customer();
-////        customer.setCustomerId(customerId);
-////        feedback.setScheme(scheme);
-////        feedback.setCustomer(customer);
-////        model.addAttribute("feedback", feedback);
-////        return "update-feedback";
-//    }
-//    
-//    @PostMapping("/update")
-//    public String updateFeedback(@ModelAttribute Feedback feedback, BindingResult bindingResult, Model model) {
-//        if (bindingResult.hasErrors()) {
-//            return "update-feedback";
-//        }
-//        try {
-//            ResponseEntity<?> response = restTemplate.postForEntity(BASE_URL + "/update", feedback, Object.class);
-//            if (response.getStatusCode() == HttpStatus.BAD_REQUEST) {
-//                model.addAttribute("error", response.getBody());
-//                return "update-feedback";
-//            }
-//            model.addAttribute("message", "Feedback updated successfully!");
-//            int schemeId = feedback.getScheme().getSchemeId();
-//            int customerId = feedback.getCustomer().getCustomerId();
-//            return "redirect:/feedback/view?schemeId=" + schemeId + "&customerId=" + customerId;
-//        } catch (HttpClientErrorException e) {
-//            model.addAttribute("error", e.getResponseBodyAsString());
-//            return "update-feedback";
-//        } catch (Exception e) {
-//            model.addAttribute("error", "Unexpected error: " + e.getMessage());
-//            return "update-feedback";
-//        }
-//    }
+    @GetMapping("/update")
+    public String showUpdateForm(@RequestParam("schemeId") int schemeId, 
+                                 @RequestParam("customerId") String customerId, 
+                                 Model model) {
+        Feedback feedback = new Feedback();
+        Scheme scheme = new Scheme();
+        scheme.setId(schemeId);
+        Customer customer = new Customer();
+        customer.setId(customerId);
+        feedback.setScheme(scheme);
+        feedback.setCustomer(customer);
+        model.addAttribute("feedback", feedback);
+        return "update-feedback";
+    }
+    
+    @PostMapping("/update")
+    public String updateFeedback(@ModelAttribute Feedback feedback, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "update-feedback";
+        }
+        try {
+            ResponseEntity<?> response = restTemplate.postForEntity(BASE_URL + "/update", feedback, Object.class);
+            if (response.getStatusCode() == HttpStatus.BAD_REQUEST) {
+                model.addAttribute("error", response.getBody());
+                return "update-feedback";
+            }
+            model.addAttribute("message", "Feedback updated successfully!");
+            int schemeId = feedback.getScheme().getId();
+            String customerId = feedback.getCustomer().getId();
+            return "redirect:/feedback/view?schemeId=" + schemeId + "&customerId=" + customerId;
+        } catch (HttpClientErrorException e) {
+            model.addAttribute("error", e.getResponseBodyAsString());
+            return "update-feedback";
+        } catch (Exception e) {
+            model.addAttribute("error", "Unexpected error: " + e.getMessage());
+            return "update-feedback";
+        }
+    }
     
     //The above methods are commented to resolve the compilation errors. Please make correction to the above methods
     @GetMapping("/view")
     public String viewFeedbackBySchemeAndCustomer(
             @RequestParam(required = false) Integer schemeId, 
-            @RequestParam(required = false) Integer customerId, 
+            @RequestParam(required = false) String customerId, 
             Model model) {
         if (schemeId == null || customerId == null) {
             model.addAttribute("error", "Please enter both Scheme ID and Customer ID to check status");

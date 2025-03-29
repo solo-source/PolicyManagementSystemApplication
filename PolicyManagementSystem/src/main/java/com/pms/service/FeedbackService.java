@@ -32,28 +32,28 @@ public class FeedbackService {
     private JavaMailSender mailSender;
     
     public Feedback submitFeedback(Feedback feedback) throws InvalidEntityException {
-//        Optional<Scheme> schemeOpt = schemeRepository.findById(feedback.getScheme().getSchemeId());
-//        Optional<Customer> customerOpt = customerRepository.findById(feedback.getCustomer().getCustomerId());
-//
-//        if (schemeOpt.isEmpty()) {
-//            throw new InvalidEntityException("Invalid Scheme ID: " + feedback.getScheme().getSchemeId());
-//        }
-//        if (customerOpt.isEmpty()) {
-//            throw new InvalidEntityException("Invalid Customer ID: " + feedback.getCustomer().getCustomerId());
-//        }
-//
-//        Scheme scheme = schemeOpt.get();
-//        Customer customer = customerOpt.get();
-//        
-//        // Update customerName if provided
-//        if (feedback.getCustomer().getCustomerName() != null) {
-//            customer.setCustomerName(feedback.getCustomer().getCustomerName());
-//            customerRepository.save(customer);
-//        }
-//
-//        feedback.setScheme(scheme);
-//        feedback.setCustomer(customer);
-//        feedback.setStatus("pending"); // Default status
+    	Optional<Scheme> schemeOpt = schemeRepository.findById(feedback.getScheme().getId());
+    	Optional<Customer> customerOpt = customerRepository.findById(feedback.getCustomer().getId());
+
+    	if (schemeOpt.isEmpty()) {
+    		throw new InvalidEntityException("Invalid Scheme ID: " + feedback.getScheme().getId());
+    	}
+    	if (customerOpt.isEmpty()) {
+    		throw new InvalidEntityException("Invalid Customer ID: " + feedback.getCustomer().getId());
+    	}
+
+    	Scheme scheme = schemeOpt.get();
+    	Customer customer = customerOpt.get();
+
+    	// Update customerName if provided
+    	if (feedback.getCustomer().getName() != null) {
+    		customer.setName(feedback.getCustomer().getName());
+    		customerRepository.save(customer);
+    	}
+
+    	feedback.setScheme(scheme);
+    	feedback.setCustomer(customer);
+    	feedback.setStatus("pending"); // Default status
         return feedbackRepository.save(feedback);
     }
     
@@ -80,30 +80,30 @@ public class FeedbackService {
         return feedbacks;
     }
 
-    public Feedback updateFeedback(int schemeId, int customerId, Feedback feedback) throws InvalidEntityException {
-//        Optional<Scheme> schemeOpt = schemeRepository.findById(schemeId);
-//        Optional<Customer> customerOpt = customerRepository.findById(customerId);
-//
-//        if (schemeOpt.isEmpty()) {
-//            throw new InvalidEntityException("Invalid Scheme ID: " + schemeId);
-//        }
-//        if (customerOpt.isEmpty()) {
-//            throw new InvalidEntityException("Invalid Customer ID: " + customerId);
-//        }
-//
-//        Scheme scheme = schemeOpt.get();
-//        Customer customer = customerOpt.get();
-//
-//        List<Feedback> existingFeedbacks = feedbackRepository.findBySchemeAndCustomer(scheme, customer);
-//        if (existingFeedbacks.isEmpty()) {
-//            throw new InvalidEntityException("Feedback not found for Scheme ID: " + schemeId + " and Customer ID: " + customerId);
-//        }
-//
-//        Feedback existingFeedback = existingFeedbacks.get(0);
-//        existingFeedback.setRating(feedback.getRating());
-//        existingFeedback.setComments(feedback.getComments());
- //       return feedbackRepository.save(existingFeedback);
-        return null;
+    public Feedback updateFeedback(int schemeId, String customerId, Feedback feedback) throws InvalidEntityException {
+        Optional<Scheme> schemeOpt = schemeRepository.findById(schemeId);
+        Optional<Customer> customerOpt = customerRepository.findById(customerId);
+
+        if (schemeOpt.isEmpty()) {
+            throw new InvalidEntityException("Invalid Scheme ID: " + schemeId);
+        }
+        if (customerOpt.isEmpty()) {
+            throw new InvalidEntityException("Invalid Customer ID: " + customerId);
+        }
+
+        Scheme scheme = schemeOpt.get();
+        Customer customer = customerOpt.get();
+
+        List<Feedback> existingFeedbacks = feedbackRepository.findBySchemeAndCustomer(scheme, customer);
+        if (existingFeedbacks.isEmpty()) {
+            throw new InvalidEntityException("Feedback not found for Scheme ID: " + schemeId + " and Customer ID: " + customerId);
+        }
+
+        Feedback existingFeedback = existingFeedbacks.get(0);
+        existingFeedback.setRating(feedback.getRating());
+        existingFeedback.setComments(feedback.getComments());
+        return feedbackRepository.save(existingFeedback);
+//        return null;
     }
     
     public List<Feedback> getFeedbackByScheme(int schemeId) throws InvalidEntityException {
@@ -119,25 +119,25 @@ public class FeedbackService {
         return feedbacks;
     }
     
-    public List<Feedback> getFeedbackBySchemeAndCustomer(int schemeId, int customerId) throws InvalidEntityException {
-//        Optional<Scheme> schemeOpt = schemeRepository.findById(schemeId);
-//        Optional<Customer> customerOpt = customerRepository.findById(customerId);
-//        
-//        if (schemeOpt.isEmpty()) {
-//            throw new InvalidEntityException("Invalid Scheme ID: " + schemeId);
-//        }
-//        if (customerOpt.isEmpty()) {
-//            throw new InvalidEntityException("Invalid Customer ID: " + customerId);
-//        }
-//        
-//        Scheme scheme = schemeOpt.get();
-//        Customer customer = customerOpt.get();
-//        List<Feedback> feedbacks = feedbackRepository.findBySchemeAndCustomer(scheme, customer);
-//        if (feedbacks.isEmpty()) {
-//            throw new InvalidEntityException("Feedback not found for Scheme ID: " + schemeId + " and Customer ID: " + customerId);
-//        }
-       // return feedbacks;
-    	return null;
+    public List<Feedback> getFeedbackBySchemeAndCustomer(int schemeId, String customerId) throws InvalidEntityException {
+        Optional<Scheme> schemeOpt = schemeRepository.findById(schemeId);
+        Optional<Customer> customerOpt = customerRepository.findById(customerId);
+        
+        if (schemeOpt.isEmpty()) {
+            throw new InvalidEntityException("Invalid Scheme ID: " + schemeId);
+        }
+        if (customerOpt.isEmpty()) {
+            throw new InvalidEntityException("Invalid Customer ID: " + customerId);
+        }
+        
+        Scheme scheme = schemeOpt.get();
+        Customer customer = customerOpt.get();
+        List<Feedback> feedbacks = feedbackRepository.findBySchemeAndCustomer(scheme, customer);
+        if (feedbacks.isEmpty()) {
+            throw new InvalidEntityException("Feedback not found for Scheme ID: " + schemeId + " and Customer ID: " + customerId);
+        }
+        return feedbacks;
+    	//return null;
     }
     public void sendFeedbackNotification(String feedbackMessage) {
         SimpleMailMessage message = new SimpleMailMessage();

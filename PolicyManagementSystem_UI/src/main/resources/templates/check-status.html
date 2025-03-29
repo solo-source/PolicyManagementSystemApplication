@@ -112,7 +112,10 @@
 			    <p><strong>Rating:</strong> <span th:text="${feedback.rating}"></span> ⭐</p>
 			    <p><strong>Comments:</strong> <span th:text="${feedback.comments}"></span></p>
 			    <p><strong>Status:</strong> <span th:text="${feedback.status}"></span></p> <!-- Added status -->
-			    <button class="update-btn" th:onclick="'location.href=\'/feedback/update?schemeId=' + ${feedback.scheme.schemeId} + '&customerId=' + ${feedback.customer.customerId} + '\''">Update</button>
+				<button class="update-btn"
+				        th:attr="onclick=|location.href='/feedback/update?schemeId='+${feedback.scheme.schemeId}+'&customerId='+${feedback.customer.customerId}|">
+				    Update
+				</button>
 			    <hr/>
 			</div>
         </div>

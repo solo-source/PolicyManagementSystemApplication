@@ -33,13 +33,13 @@ public class FeedbackController {
     // Update existing feedback
     @PostMapping("/update")
     public ResponseEntity<?> updateFeedback(@Valid @RequestBody Feedback feedback) throws InvalidEntityException{
-//        Feedback result = feedbackService.updateFeedback(
-//            feedback.getScheme().getSchemeId(),
-//            feedback.getCustomer().getCustomerId(),
-//            feedback);
-//        feedbackService.sendFeedbackNotification(feedback.getComments());
- //       return ResponseEntity.ok(result);
-    	return null;
+        Feedback result = feedbackService.updateFeedback(
+            feedback.getScheme().getId(),
+            feedback.getCustomer().getId(),
+            feedback);
+        feedbackService.sendFeedbackNotification(feedback.getComments());
+        return ResponseEntity.ok(result);
+    	//return null;
     }
     
   /*  // View feedback by scheme ID
@@ -55,7 +55,7 @@ public class FeedbackController {
     @GetMapping("/view")
     public ResponseEntity<List<Feedback>> getFeedbackBySchemeAndCustomer(
             @RequestParam int schemeId, 
-            @RequestParam int customerId) throws InvalidEntityException{
+            @RequestParam String customerId) throws InvalidEntityException{
         List<Feedback> feedbackList = feedbackService.getFeedbackBySchemeAndCustomer(schemeId, customerId);
         if (feedbackList == null || feedbackList.isEmpty()) {
             feedbackList = Collections.emptyList();
