@@ -154,22 +154,25 @@ public class PolicyService {
             // If the incoming type is already enum, then no trim() is available.
             // One approach is to expect a String from the client. If so, you could use:
             String statusStr = policyDetails.getPolicyStatus().toString();
-            if (!(statusStr.equalsIgnoreCase("ACTIVE") || statusStr.equalsIgnoreCase("DEACTIVATED"))) {
-                throw new IllegalArgumentException("Policy status must be either ACTIVE or DEACTIVATED.");
+            if (!(statusStr.equalsIgnoreCase("ACTIVE") || statusStr.equalsIgnoreCase("INACTIVE"))) {
+                throw new IllegalArgumentException("Policy status must be either ACTIVE or INACTIVE.");
             }
             PolicyStatus newStatus = PolicyStatus.valueOf(statusStr.toUpperCase());
             existingPolicy.setPolicyStatus(newStatus);
         }
 
-        // Similarly update AnnuityTerm.
         if (policyDetails.getAnnuityTerm() != null) {
             String termStr = policyDetails.getAnnuityTerm().toString();
-            if (!(termStr.equalsIgnoreCase("YEARLY") || termStr.equalsIgnoreCase("MONTHLY"))) {
-                throw new IllegalArgumentException("Annuity Term must be either YEARLY or MONTHLY.");
+            if (!(termStr.equalsIgnoreCase("QUARTERLY") ||
+                  termStr.equalsIgnoreCase("HALF_YEARLY") ||
+                  termStr.equalsIgnoreCase("ANNUAL") ||
+                  termStr.equalsIgnoreCase("ONE_TIME"))) {
+                throw new IllegalArgumentException("Annuity Term must be one of: QUARTERLY, HALF_YEARLY, ANNUAL, ONE_TIME.");
             }
             AnnuityTerm newTerm = AnnuityTerm.valueOf(termStr.toUpperCase());
             existingPolicy.setAnnuityTerm(newTerm);
         }
+
 
         return repo.save(existingPolicy);
     }
