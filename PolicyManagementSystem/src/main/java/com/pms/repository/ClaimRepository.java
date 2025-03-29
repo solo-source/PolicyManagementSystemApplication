@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ClaimRepository extends JpaRepository<Claim, Long> {
-	 List<Claim> findByPolicy_PolicyId(Long policyId);
+	 List<Claim> findByPolicy_PolicyId(String policyId);
 }

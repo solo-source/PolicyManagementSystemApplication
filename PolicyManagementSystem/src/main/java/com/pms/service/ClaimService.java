@@ -31,8 +31,8 @@ public class ClaimService {
     @Autowired
     private EmailService emailService;
 
-    public List<Claim> getClaimsByPolicyId(Long policyId) throws InvalidEntityException {
-        if (policyId == null || policyId <= 0) {
+    public List<Claim> getClaimsByPolicyId(String policyId) throws InvalidEntityException {
+    	if (policyId == null || policyId.trim().isEmpty()) {
             throw new InvalidEntityException("Invalid Policy ID.");
         }
         if (!policyRepository.existsById(policyId)) {

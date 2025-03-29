@@ -34,9 +34,9 @@ public class PaymentService {
     }
 
     @Transactional
-    public Payment createPayment(String paymentId,String customerId, Long policyId, Double amount, Payment.PaymentType paymentType) {
+    public Payment createPayment(String paymentId,String customerId, String policyId, Double amount, Payment.PaymentType paymentType) {
         Optional<Customer> customerOpt = customerRepository.findById(customerId);
-        Optional<Policy> policyOpt = policyRepository.findById(policyId);
+        Optional<Policy> policyOpt = policyRepository.findByPolicyId(policyId);
 
         if (customerOpt.isPresent() && policyOpt.isPresent()) {
             Payment payment = new Payment();
