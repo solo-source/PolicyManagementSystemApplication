@@ -9,7 +9,7 @@ import jakarta.validation.constraints.Size;
 public class Scheme{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 
 	@NotBlank(message = "Scheme name is mandatory")
 	@Size(max = 20, message = "Scheme name cannot exceed 20 characters")
@@ -37,11 +37,11 @@ public class Scheme{
 //	@OneToMany(mappedBy = "scheme", cascade = CascadeType.ALL, orphanRemoval = true)
 //	private List<Feedback> feedbacks;
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
