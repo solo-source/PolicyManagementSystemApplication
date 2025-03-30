@@ -42,15 +42,7 @@ public class FeedbackController {
     	//return null;
     }
     
-  /*  // View feedback by scheme ID
-    @GetMapping("/view")
-    public ResponseEntity<List<Feedback>> getFeedbackByScheme(@RequestParam int schemeId) {
-        List<Feedback> feedbackList = feedbackService.getFeedbackByScheme(schemeId);
-        if (feedbackList == null) {
-            feedbackList = Collections.emptyList();
-        }
-        return ResponseEntity.ok(feedbackList);
-    }*/
+
 
     @GetMapping("/view")
     public ResponseEntity<List<Feedback>> getFeedbackBySchemeAndCustomer(
