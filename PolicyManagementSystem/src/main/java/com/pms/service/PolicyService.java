@@ -88,9 +88,8 @@ public class PolicyService {
             throw new IllegalArgumentException("Annuity Term must be one of: QUARTERLY, HALF_YEARLY, ANNUAL, ONE_TIME.");
         }
 
-        // Generate a new policyId by checking the last record.
-        // Assumes that policy.getPolicyId() is of type String.
-        Policy lastPolicy = repo.findTopByOrderByIdDesc();
+     // Generate a new policyId by checking the last record based on policy_id.
+        Policy lastPolicy = repo.findTopByOrderByPolicyIdDesc();
         String newPolicyId;
         if (lastPolicy == null || lastPolicy.getPolicyId() == null) {
             newPolicyId = "POLICY001";
@@ -100,7 +99,7 @@ public class PolicyService {
             int newNumber = lastNumber + 1;
             newPolicyId = String.format("POLICY%03d", newNumber);
         }
-        
+
         // Set the auto-generated policyId; user input is ignored for this field.
         policy.setPolicyId(newPolicyId);
         
@@ -177,9 +176,14 @@ public class PolicyService {
         return repo.save(existingPolicy);
     }
     
-    public Policy getPolicyById(String id) throws InvalidEntityException {
-        return repo.findByPolicyId(id)
-                .orElseThrow(() -> new InvalidEntityException("Policy not found with id " + id));
+//    public Policy getPolicyById(String id) throws InvalidEntityException {
+//        return repo.findByPolicyId(id)
+//                .orElseThrow(() -> new InvalidEntityException("Policy not found with id " + id));
+//    }
+    
+    public Policy getPolicyByPolicyId(String policyId) throws InvalidEntityException {
+        return repo.findByPolicyId(policyId)
+                   .orElseThrow(() -> new InvalidEntityException("Policy not found with id " + policyId));
     }
     
     public List<Policy> getPoliciesBySchemeName(String schemeName) {
@@ -198,7 +202,7 @@ public class PolicyService {
         return repo.findByMaturityAmountBetween(min, max);
     }
     
-    public List<Policy> getPoliciesByNumberOfYears(Integer years) {
-        return repo.findByNumberOfYears(years);
+    public List<Policy> getPoliciesByPolicyTerm(Integer term) {
+        return repo.findByPolicyTerm(term);
     }
 }
