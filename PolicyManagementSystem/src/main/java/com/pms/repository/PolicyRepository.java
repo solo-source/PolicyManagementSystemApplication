@@ -14,11 +14,12 @@ public interface PolicyRepository extends JpaRepository<Policy, String> {
     
     Optional<Policy> findByPolicyId(String policyId);
     
-    Policy findTopByOrderByIdDesc();
+//    Policy findTopByOrderByIdDesc();
+    Policy findTopByOrderByPolicyIdDesc();
     
     List<Policy> findBySchemeSchemeName(String schemeName);
     List<Policy> findByStartDate(LocalDate startDate);
     List<Policy> findByTotalPremiumAmountBetween(Double min, Double max);
     List<Policy> findByMaturityAmountBetween(Double min, Double max);
-    List<Policy> findByNumberOfYears(Integer numberOfYears);
+    List<Policy> findByPolicyTerm(Integer policyTerm);
 }

@@ -61,9 +61,9 @@ public class PolicyController {
         return ResponseEntity.ok(updatedPolicy);
     }
     
-    @GetMapping("/{id}")
-    public ResponseEntity<Policy> getPolicyById(@PathVariable String id) throws InvalidEntityException {
-        Policy policy = service.getPolicyById(id);
+    @GetMapping("/{policyId}")
+    public ResponseEntity<Policy> getPolicyByPolicyId(@PathVariable String policyId) throws InvalidEntityException {
+        Policy policy = service.getPolicyByPolicyId(policyId);
         return ResponseEntity.ok(policy);
     }
     
@@ -94,9 +94,9 @@ public class PolicyController {
         return ResponseEntity.ok(policies);
     }
     
-    @GetMapping("/years/{years}")
-    public ResponseEntity<List<Policy>> getPoliciesByYears(@PathVariable Integer years) {
-        List<Policy> policies = service.getPoliciesByNumberOfYears(years);
+    @GetMapping("/terms/{terms}")
+    public ResponseEntity<List<Policy>> getPoliciesByPolicyTerm(@PathVariable Integer term) {
+        List<Policy> policies = service.getPoliciesByPolicyTerm(term);
         return ResponseEntity.ok(policies);
     }
 }
