@@ -95,7 +95,7 @@ public class PolicyController {
     }
     
     @GetMapping("/terms/{terms}")
-    public ResponseEntity<List<Policy>> getPoliciesByYears(@PathVariable Integer term) {
+    public ResponseEntity<List<Policy>> getPoliciesByPolicyTerm(@PathVariable Integer term) {
         List<Policy> policies = service.getPoliciesByPolicyTerm(term);
         return ResponseEntity.ok(policies);
     }
