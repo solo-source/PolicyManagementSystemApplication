@@ -11,6 +11,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class AdminService {
@@ -75,6 +76,7 @@ public class AdminService {
 		}
 	}
 
+	@Transactional
 	public String acceptCustomer(Customer cust) throws InvalidEntityException {
 		Optional<Customer> existingCustomer = custRepo.findById(cust.getId());
 		if (existingCustomer.isPresent()) {

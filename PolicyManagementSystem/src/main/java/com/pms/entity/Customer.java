@@ -2,6 +2,7 @@ package com.pms.entity;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -55,15 +56,15 @@ public class Customer {
     private String password;
 
     @Column(name="verified")
-    private Boolean verified;
+    private Boolean verified = false;
 
     @Column(name="active")
-    private Boolean active;
+    private Boolean active = false;
 
 
-    @JsonManagedReference(value="customer-policies")
+    @JsonBackReference(value="customer-policies")
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Policy> policies;
+    private List<BoughtPolicy> policies;
 
     @JsonManagedReference(value="customer-feedbacks")
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -125,7 +126,7 @@ public class Customer {
     }
 
     public boolean getVerified() {
-        return verified;
+    	return verified != null ? verified : false;
     }
     public void setVerified(boolean verified) {
         this.verified = verified;
@@ -139,16 +140,16 @@ public class Customer {
     }
 
     public boolean getActive() {
-        return active;
+        return active != null ? active : false;
     }
     public void setActive(boolean active) {
         this.active = active;
     }
 
-    public List<Policy> getPolicies() {
+    public List<BoughtPolicy> getPolicies() {
         return policies;
     }
-    public void setPolicies(List<Policy> policies) {
+    public void setPolicies(List<BoughtPolicy> policies) {
         this.policies = policies;
     }
 

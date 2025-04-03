@@ -44,40 +44,45 @@
         .buy-btn:hover {
             background-color: #218838;
         }
-		.back-button {
-			background-color: #007bff;
-			           color: white;
-			           border: none;
-			           padding: 12px 20px;
-			           font-size: 16px;
-			           border-radius: 5px;
-			           cursor: pointer;
-			           text-decoration: none;
-			           display: inline-block;
-			           margin-top: 20px;
-		        color: white;
-		        margin-bottom: 15px;
-		    }
-		    .back-button:hover {
-		        background-color: #0056b3;
-		    }
+        .back-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+            margin-bottom: 15px;
+        }
+        .back-button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2>Policy Details</h2>
-        <div class="policy-info">
-            <p><strong>Policy ID:</strong> <span th:text="${policy.policyId}"></span></p>
-            <p><strong>Start Date:</strong> <span th:text="${policy.startDate}"></span></p>
-            <p><strong>Total Premium Amount:</strong> ₹<span th:text="${policy.totalPremiumAmount}"></span></p>
-            <p><strong>Maturity Amount:</strong> ₹<span th:text="${policy.maturityAmount}"></span></p>
-            <p><strong>Policy Term:</strong> <span th:text="${policy.policyTerm}"></span> years</p>
-            <p><strong>Policy Status:</strong> <span th:text="${policy.policyStatus}"></span></p>
-            <p><strong>Annuity Term:</strong> <span th:text="${policy.annuityTerm}"></span></p>
-        </div>
-		<span class="back-button" onclick="goBack()">Back</span>
-		<a  class="back-button">claim</a>
-    </div>
+	<div class="container" th:if="${boughtPolicy != null}">
+	    <h2>Policy Details</h2>
+	    <div class="policy-info">
+	        <p><strong>Policy ID:</strong> <span th:text="${boughtPolicy.boughtPolicyId}"></span></p>
+	        <p><strong>Start Date:</strong> <span th:text="${boughtPolicy.startDate}"></span></p>
+	        <p><strong>Total Premium Amount:</strong> ₹<span th:text="${boughtPolicy.totalPremiumAmount}"></span></p>
+	        <p><strong>Maturity Amount:</strong> ₹<span th:text="${boughtPolicy.maturityAmount}"></span></p>
+	        <p><strong>Policy Term:</strong> <span th:text="${boughtPolicy.policyTerm}"></span> years</p>
+	        <p><strong>Policy Status:</strong> <span th:text="${boughtPolicy.policyStatus}"></span></p>
+	        <p><strong>Annuity Term:</strong> <span th:text="${boughtPolicy.annuityTerm}"></span></p>
+	    </div>
+	    <span class="back-button" onclick="goBack()">Back</span>
+	    <a class="back-button">Claim</a>
+	</div>
+
+	<div class="container" th:if="${boughtPolicy == null}">
+	    <h2>Error</h2>
+	    <p>The requested policy details could not be found.</p>
+	    <span class="back-button" onclick="goBack()">Back</span>
+	</div>
 </body>
 <script>
     function goBack() {

@@ -18,7 +18,7 @@ import java.util.List;
 @RequestMapping("/feedback")
 public class FeedbackUiController {
     
-    private final String BASE_URL = "http://localhost:8081/api/feedback";
+    private final String BASE_URL = "http://localhost:8030/api/feedback";
     
     @Autowired
     private RestTemplate restTemplate;

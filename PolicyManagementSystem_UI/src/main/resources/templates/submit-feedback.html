@@ -48,13 +48,13 @@
 	    <div class="form-container">
 	        <form th:action="@{/feedback/submit}" method="post" th:object="${feedback}">
 	            <label>Scheme ID:</label>
-	            <input type="number" th:field="*{scheme.schemeId}" >
+	            <input type="number" th:field="*{scheme.id}" >
 
 	            <label>Customer ID:</label>
-	            <input type="number" th:field="*{customer.customerId}" >
+	            <input type="number" th:field="*{customer.id}" >
 
 	            <label>Customer Name:</label>
-	            <input type="text" th:field="*{customer.customerName}" >
+	            <input type="text" th:field="*{customer.name}" >
 
 	            <label>Rating:</label>
 	            <select th:field="*{rating}">

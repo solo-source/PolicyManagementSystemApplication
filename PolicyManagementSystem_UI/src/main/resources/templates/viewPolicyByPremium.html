@@ -28,12 +28,12 @@
             <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th>ID</th>
+                        <th>Policy Name</th>
                         <th>Policy ID</th>
                         <th>Start Date</th>
                         <th>Total Premium</th>
                         <th>Maturity</th>
-                        <th>Years</th>
+                        <th>Term</th>
                         <th>Status</th>
                         <th>Annuity</th>
                     </tr>
@@ -49,7 +49,7 @@ document.getElementById("viewByPremiumForm").addEventListener("submit", function
     e.preventDefault();
     var minPremium = document.getElementById("minPremium").value;
     var maxPremium = document.getElementById("maxPremium").value;
-    fetch("http://localhost:7281/api/policies/premium?min=" + minPremium + "&max=" + maxPremium)
+    fetch("http://localhost:8030/policy/premium?min=" + minPremium + "&max=" + maxPremium)
     .then(response => {
         if(!response.ok) {
             return response.text().then(text => { throw new Error(text); });
@@ -64,12 +64,12 @@ document.getElementById("viewByPremiumForm").addEventListener("submit", function
         } else {
             data.forEach(function(p){
                 var row = "<tr>" +
-                    "<td>" + p.id + "</td>" +
+                    "<td>" + p.policyname + "</td>" +
                     "<td>" + p.policyId + "</td>" +
                     "<td>" + p.startDate + "</td>" +
                     "<td>" + p.totalPremiumAmount + "</td>" +
                     "<td>" + p.maturityAmount + "</td>" +
-                    "<td>" + p.numberOfYears + "</td>" +
+                    "<td>" + p.policyterm + "</td>" +
                     "<td>" + p.policyStatus + "</td>" +
                     "<td>" + p.annuityTerm + "</td>" +
                     "</tr>";

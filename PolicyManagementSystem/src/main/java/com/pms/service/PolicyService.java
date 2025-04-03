@@ -7,8 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.pms.entity.Policy;
 import com.pms.entity.Policy.PolicyStatus;
-import com.pms.entity.AnnuityTerm; // Use external enum
+import com.pms.entity.AnnuityTerm;
+import com.pms.entity.BoughtPolicy;
+import com.pms.entity.Customer;
 import com.pms.exception.InvalidEntityException;
+import com.pms.repository.BoughtPolicyRepository;
 import com.pms.repository.CustomerRepository;
 import com.pms.repository.PolicyRepository;
 import com.pms.repository.SchemeRepository;
@@ -24,6 +27,9 @@ public class PolicyService {
     
     @Autowired
     private SchemeRepository schemeRepo;
+    
+    @Autowired
+    private BoughtPolicyRepository boughtPolicyRepo;
 
     public List<Policy> viewPolicies() {
         return repo.findAll();
@@ -33,8 +39,8 @@ public class PolicyService {
         return repo.findByPolicyId(p.getPolicyId());
     }
 
-    public List<Policy> viewCustPolicies(String id) {
-        return repo.findByCustomerId(id);
+    public List<BoughtPolicy> viewCustPolicies(String id) {
+        return boughtPolicyRepo.findByCustomerId(id);
     }
 
     public List<Policy> viewSchemePolicies(Integer id) {
@@ -89,14 +95,11 @@ public class PolicyService {
         return repo.save(policy);
     }
 
-    
     public Policy updatePolicy(String id, Policy policyDetails) throws InvalidEntityException {
         Policy existingPolicy = repo.findByPolicyId(id)
                 .orElseThrow(() -> new InvalidEntityException("Policy not found with id " + id));
 
-        if (policyDetails.getCustomer() != null) {
-            throw new IllegalArgumentException("Customer field is not allowed in policy update.");
-        }
+        // Disallow updates for certain fields.
         if (policyDetails.getScheme() != null) {
             throw new IllegalArgumentException("Scheme field is not allowed in policy update.");
         }
@@ -176,5 +179,92 @@ public class PolicyService {
     
     public List<Policy> getPoliciesByPolicyTerm(Integer term) {
         return repo.findByPolicyTerm(term);
+    }
+    
+    // Updated buyPolicy method that sets the entire policy object in BoughtPolicy.
+    public BoughtPolicy buyPolicy(String policyId, String customerId) throws InvalidEntityException {
+        Policy policy = repo.findByPolicyId(policyId)
+                .orElseThrow(() -> new InvalidEntityException("Policy not found with id " + policyId));
+
+        Customer customer = customerRepo.findById(customerId)
+                .orElseThrow(() -> new InvalidEntityException("Customer not found with id " + customerId));
+
+        BoughtPolicy boughtPolicy = new BoughtPolicy();
+        boughtPolicy.setCustomer(customer);
+        // Set the policy object so that all policy details are captured.
+        boughtPolicy.setPolicy(policy);
+        boughtPolicy.setStartDate(policy.getStartDate());
+        boughtPolicy.setTotalPremiumAmount(policy.getTotalPremiumAmount());
+        boughtPolicy.setMaturityAmount(policy.getMaturityAmount());
+        boughtPolicy.setPolicyTerm(policy.getPolicyTerm());
+        boughtPolicy.setPolicyStatus(policy.getPolicyStatus());
+        boughtPolicy.setAnnuityTerm(policy.getAnnuityTerm());
+
+        return boughtPolicyRepo.save(boughtPolicy);
+    }
+    
+    // Updated updateBoughtPolicy method using the proper identifier field and allowed fields.
+    public BoughtPolicy updateBoughtPolicy(String id, BoughtPolicy boughtPolicyDetails) throws InvalidEntityException {
+        // Retrieve the existing bought policy record by its id.
+        BoughtPolicy existingBoughtPolicy = boughtPolicyRepo.findById(id)
+                .orElseThrow(() -> new InvalidEntityException("Bought Policy not found with id " + id));
+
+        // Disallow updates to fields that should remain unchanged.
+        if (boughtPolicyDetails.getCustomer() != null) {
+            throw new IllegalArgumentException("Customer field is not allowed in bought policy update.");
+        }
+        // Disallow update of the bought policy identifier.
+        if (boughtPolicyDetails.getBoughtPolicyId() != null) {
+            throw new IllegalArgumentException("Bought Policy ID field is not allowed in update.");
+        }
+
+        // Update allowed fields.
+        if (boughtPolicyDetails.getStartDate() != null) {
+            existingBoughtPolicy.setStartDate(boughtPolicyDetails.getStartDate());
+        }
+
+        if (boughtPolicyDetails.getTotalPremiumAmount() != null) {
+            if (boughtPolicyDetails.getTotalPremiumAmount() <= 0) {
+                throw new IllegalArgumentException("Total premium amount must be a positive number.");
+            }
+            existingBoughtPolicy.setTotalPremiumAmount(boughtPolicyDetails.getTotalPremiumAmount());
+        }
+
+        if (boughtPolicyDetails.getMaturityAmount() != null) {
+            if (boughtPolicyDetails.getMaturityAmount() <= 0) {
+                throw new IllegalArgumentException("Maturity amount must be a positive number.");
+            }
+            existingBoughtPolicy.setMaturityAmount(boughtPolicyDetails.getMaturityAmount());
+        }
+
+        if (boughtPolicyDetails.getPolicyTerm() != null) {
+            if (boughtPolicyDetails.getPolicyTerm() <= 0) {
+                throw new IllegalArgumentException("Policy term must be a positive number.");
+            }
+            existingBoughtPolicy.setPolicyTerm(boughtPolicyDetails.getPolicyTerm());
+        }
+
+        if (boughtPolicyDetails.getPolicyStatus() != null) {
+            String statusStr = boughtPolicyDetails.getPolicyStatus().toString();
+            if (!(statusStr.equalsIgnoreCase("ACTIVE") || statusStr.equalsIgnoreCase("INACTIVE"))) {
+                throw new IllegalArgumentException("Policy status must be either ACTIVE or INACTIVE.");
+            }
+            existingBoughtPolicy.setPolicyStatus(Policy.PolicyStatus.valueOf(statusStr.toUpperCase()));
+        }
+
+        if (boughtPolicyDetails.getAnnuityTerm() != null) {
+            String termStr = boughtPolicyDetails.getAnnuityTerm().toString();
+            if (!(termStr.equalsIgnoreCase("QUARTERLY") ||
+                  termStr.equalsIgnoreCase("HALF_YEARLY") ||
+                  termStr.equalsIgnoreCase("ANNUAL") ||
+                  termStr.equalsIgnoreCase("ONE_TIME"))) {
+                throw new IllegalArgumentException("Annuity Term must be one of: QUARTERLY, HALF_YEARLY, ANNUAL, ONE_TIME.");
+            }
+            existingBoughtPolicy.setAnnuityTerm(
+                    com.pms.entity.AnnuityTerm.valueOf(termStr.toUpperCase())
+            );
+        }
+
+        return boughtPolicyRepo.save(existingBoughtPolicy);
     }
 }

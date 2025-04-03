@@ -13,19 +13,19 @@
     <form id="viewByIdForm">
         <div class="mb-3">
             <label for="policyId" class="form-label">Policy ID</label>
-            <input type="number" id="policyId" class="form-control" placeholder="Enter Policy ID" required min="1" />
+            <input type="text" id="policyId" class="form-control" placeholder="Enter Policy ID" required min="1" />
         </div>
         <button type="submit" class="btn btn-info">Search</button>
         <a href="/policy-management/view-dashboard" class="btn btn-secondary ms-2">Back</a>
     </form>
     <div id="result" class="mt-4" style="display:none;">
         <h5>Policy Details:</h5>
-        <p><strong>ID:</strong> <span id="resId"></span></p>
+        <p><strong>Policy Name:</strong> <span id="resPolicyName"></span></p>
         <p><strong>Policy ID:</strong> <span id="resPolicyId"></span></p>
         <p><strong>Start Date:</strong> <span id="resStartDate"></span></p>
         <p><strong>Total Premium:</strong> <span id="resTotalPremium"></span></p>
         <p><strong>Maturity Amount:</strong> <span id="resMaturityAmount"></span></p>
-        <p><strong>No. of Years:</strong> <span id="resYears"></span></p>
+        <p><strong>Policy Term:</strong> <span id="resYears"></span></p>
         <p><strong>Status:</strong> <span id="resStatus"></span></p>
         <p><strong>Annuity Term:</strong> <span id="resAnnuityTerm"></span></p>
     </div>
@@ -34,7 +34,7 @@
 document.getElementById("viewByIdForm").addEventListener("submit", function(e){
     e.preventDefault();
     var policyId = document.getElementById("policyId").value;
-    fetch("http://localhost:7281/api/policies/" + policyId)
+    fetch("http://localhost:8030/policy/" + policyId)
     .then(response => {
         if(!response.ok) {
             return response.text().then(text => { throw new Error(text); });
@@ -42,12 +42,12 @@ document.getElementById("viewByIdForm").addEventListener("submit", function(e){
         return response.json();
     })
     .then(data => {
-        document.getElementById("resId").textContent = data.id;
+        document.getElementById("resPolicyName").textContent = data.policyname;
         document.getElementById("resPolicyId").textContent = data.policyId;
         document.getElementById("resStartDate").textContent = data.startDate;
         document.getElementById("resTotalPremium").textContent = data.totalPremiumAmount;
         document.getElementById("resMaturityAmount").textContent = data.maturityAmount;
-        document.getElementById("resYears").textContent = data.numberOfYears;
+        document.getElementById("resYears").textContent = data.policyterm;
         document.getElementById("resStatus").textContent = data.policyStatus;
         document.getElementById("resAnnuityTerm").textContent = data.annuityTerm;
         document.getElementById("result").style.display = "block";

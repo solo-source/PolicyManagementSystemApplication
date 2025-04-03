@@ -10,8 +10,8 @@ public class Customer {
 	private String address;
 	private String regDate;
 	private String password;
-	private Boolean verified;
-	private Boolean active;
+	private Boolean verified = false;
+	private Boolean active = false;
 
 	public String getId() {
 		return id;
@@ -62,7 +62,7 @@ public class Customer {
 	}
 
 	public boolean getVerified() {
-		return verified;
+		return verified != null ? verified : false;
 	}
 
 	public void setVerified(boolean verified) {
@@ -78,7 +78,7 @@ public class Customer {
 	}
 
 	public boolean getActive() {
-		return active;
+		return active != null ? active : false;
 	}
 
 	public void setActive(boolean active) {

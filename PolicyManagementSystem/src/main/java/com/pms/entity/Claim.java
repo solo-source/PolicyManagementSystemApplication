@@ -3,6 +3,7 @@ package com.pms.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -21,8 +22,8 @@ public class Claim {
     
     @Temporal(TemporalType.DATE)
     @Column(name = "claim_date", nullable = false)
-    @NotNull(message = "Claim date must not be null")
-    private Date claimDate;
+//    @NotNull(message = "Claim date must not be null")
+    private LocalDate claimDate;
 
     @Column(name = "claim_description", length = 500, nullable = false)
     @NotBlank(message = "Claim description must not be blank")
@@ -52,7 +53,7 @@ public class Claim {
     public Claim() {}
 
     // ✅ Constructor (Without `claimId`, since it’s auto-generated)
-    public Claim(Policy policy, Date claimDate, String claimDescription, BigDecimal claimAmount, ClaimStatus claimStatus) {
+    public Claim(Policy policy, LocalDate claimDate, String claimDescription, BigDecimal claimAmount, ClaimStatus claimStatus) {
         this.policy = policy;
         this.claimDate = claimDate;
         this.claimDescription = claimDescription;
@@ -74,11 +75,11 @@ public class Claim {
         this.policy = policy;
     }
 
-    public Date getClaimDate() {
+    public LocalDate getClaimDate() {
         return claimDate;
     }
 
-    public void setClaimDate(Date claimDate) {
+    public void setClaimDate(LocalDate claimDate) {
         this.claimDate = claimDate;
     }
 

@@ -4,6 +4,7 @@ import jakarta.validation.constraints.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
 
 
@@ -16,7 +17,7 @@ public class Claim {
     private Policy policy;
 
    
-    private Date claimDate;
+    private LocalDate claimDate;
 
     private String claimDescription;
 
@@ -35,7 +36,7 @@ public class Claim {
 
     public Claim() {}
 
-    public Claim(Policy policy, Date claimDate, String claimDescription, BigDecimal claimAmount, ClaimStatus claimStatus, String email) {
+    public Claim(Policy policy, LocalDate claimDate, String claimDescription, BigDecimal claimAmount, ClaimStatus claimStatus, String email) {
         this.policy = policy;
         this.claimDate = claimDate;
         this.claimDescription = claimDescription;
@@ -56,11 +57,11 @@ public class Claim {
         this.policy = policy;
     }
 
-    public Date getClaimDate() {
+    public LocalDate getClaimDate() {
         return claimDate;
     }
 
-    public void setClaimDate(Date claimDate) {
+    public void setClaimDate(LocalDate claimDate) {
         this.claimDate = claimDate;
     }
 

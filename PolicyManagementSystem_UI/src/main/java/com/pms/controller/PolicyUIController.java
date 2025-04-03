@@ -201,14 +201,138 @@ public class PolicyUIController {
     }
     
     @PostMapping("/view-by-years")
-    public String viewByYears(@RequestParam("years") Integer years,
+    public String viewByYears(@RequestParam("terms") Integer terms,
                               RedirectAttributes redirectAttributes) {
         try {
-            Policy[] policies = policyClientService.getPoliciesByYears(years);
+            Policy[] policies = policyClientService.getPoliciesByYears(terms);
             redirectAttributes.addFlashAttribute("policies", policies);
         } catch(Exception ex) {
             redirectAttributes.addFlashAttribute("error", ex.getMessage());
         }
         return "redirect:/policy-management/view-dashboard";
+    }
+    
+    // ---------------------------
+    // BOUGHT POLICY DASHBOARD & SEARCH OPERATIONS
+    // ---------------------------
+    
+    // Mapping for the new Bought Policy Dashboard
+    @GetMapping("/view-bought-dashboard")
+    public String showViewBoughtPolicyDashboard() {
+        return "viewBoughtPolicyDashboard"; // returns viewBoughtPolicyDashboard.html
+    }
+    
+    // Mapping for view by Customer ID for bought policies
+    @GetMapping("/view-bought-by-customerId")
+    public String showViewBoughtByCustomerIdPage(Model model) {
+        if(!model.containsAttribute("customerId")) {
+            model.addAttribute("customerId", "");
+        }
+        return "viewBoughtPolicyByCustomerId"; // create this template accordingly
+    }
+    
+    @PostMapping("/view-bought-by-customerId")
+    public String viewBoughtByCustomerId(@RequestParam("customerId") String customerId,
+                                         RedirectAttributes redirectAttributes) {
+        try {
+            // Assumes a corresponding client service method exists
+            BoughtPolicy[] policies = policyClientService.getBoughtPoliciesByCustomerId(customerId);
+            redirectAttributes.addFlashAttribute("policies", policies);
+        } catch (Exception ex) {
+            redirectAttributes.addFlashAttribute("error", ex.getMessage());
+        }
+        return "redirect:/policy-management/view-bought-dashboard";
+    }
+    
+    // Mapping for view by Scheme for bought policies
+    @GetMapping("/view-bought-by-scheme")
+    public String showViewBoughtBySchemePage(Model model) {
+        if(!model.containsAttribute("schemeName")) {
+            model.addAttribute("schemeName", "");
+        }
+        return "viewBoughtPolicyByScheme"; // create this template accordingly
+    }
+    
+    @PostMapping("/view-bought-by-scheme")
+    public String viewBoughtByScheme(@RequestParam("schemeName") String schemeName,
+                                     RedirectAttributes redirectAttributes) {
+        try {
+            BoughtPolicy[] policies = policyClientService.getBoughtPoliciesByScheme(schemeName);
+            redirectAttributes.addFlashAttribute("policies", policies);
+        } catch (Exception ex) {
+            redirectAttributes.addFlashAttribute("error", ex.getMessage());
+        }
+        return "redirect:/policy-management/view-bought-dashboard";
+    }
+    
+    // Mapping for view by Policy Term for bought policies
+    @GetMapping("/view-bought-by-term")
+    public String showViewBoughtByTermPage(Model model) {
+        if(!model.containsAttribute("policyTerm")) {
+            model.addAttribute("policyTerm", "");
+        }
+        return "viewBoughtPolicyByTerm"; // create this template accordingly
+    }
+    
+    @PostMapping("/view-bought-by-term")
+    public String viewBoughtByTerm(@RequestParam("policyTerm") Integer policyTerm,
+                                   RedirectAttributes redirectAttributes) {
+        try {
+            BoughtPolicy[] policies = policyClientService.getBoughtPoliciesByTerm(policyTerm);
+            redirectAttributes.addFlashAttribute("policies", policies);
+        } catch (Exception ex) {
+            redirectAttributes.addFlashAttribute("error", ex.getMessage());
+        }
+        return "redirect:/policy-management/view-bought-dashboard";
+    }
+    
+    // Mapping for view by Maturity Range for bought policies
+    @GetMapping("/view-bought-by-maturity")
+    public String showViewBoughtByMaturityPage(Model model) {
+        if(!model.containsAttribute("minMaturity")) {
+            model.addAttribute("minMaturity", 0.0);
+        }
+        if(!model.containsAttribute("maxMaturity")) {
+            model.addAttribute("maxMaturity", 0.0);
+        }
+        return "viewBoughtPolicyByMaturity"; // create this template accordingly
+    }
+    
+    @PostMapping("/view-bought-by-maturity")
+    public String viewBoughtByMaturity(@RequestParam("minMaturity") Double minMaturity,
+                                       @RequestParam("maxMaturity") Double maxMaturity,
+                                       RedirectAttributes redirectAttributes) {
+        try {
+            BoughtPolicy[] policies = policyClientService.getBoughtPoliciesByMaturityRange(minMaturity, maxMaturity);
+            redirectAttributes.addFlashAttribute("policies", policies);
+        } catch (Exception ex) {
+            redirectAttributes.addFlashAttribute("error", ex.getMessage());
+        }
+        return "redirect:/policy-management/view-bought-dashboard";
+    }
+    
+    // Mapping for view by Premium Range for bought policies
+    @GetMapping("/view-bought-by-premium")
+    public String showViewBoughtByPremiumPage(Model model) {
+        if(!model.containsAttribute("minPremium")) {
+            model.addAttribute("minPremium", 0.0);
+        }
+        if(!model.containsAttribute("maxPremium")) {
+            model.addAttribute("maxPremium", 0.0);
+        }
+        return "viewBoughtPolicyByPremium"; // create this template accordingly
+    }
+    
+    @PostMapping("/view-bought-by-premium")
+    public String viewBoughtByPremium(@RequestParam("minPremium") Double minPremium,
+                                      @RequestParam("maxPremium") Double maxPremium,
+                                      RedirectAttributes redirectAttributes) {
+        try {
+            BoughtPolicy[] policies = policyClientService.getBoughtPoliciesByPremiumRange(minPremium, maxPremium);
+            redirectAttributes.addFlashAttribute("policies", policies);
+        } catch (Exception ex) {
+            redirectAttributes.addFlashAttribute("error", ex.getMessage());
+        }
+        return "redirect:/policy-management/view-bought-dashboard";
     }
 }

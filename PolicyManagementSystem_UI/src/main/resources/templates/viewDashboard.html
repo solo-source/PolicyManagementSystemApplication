@@ -62,12 +62,21 @@
         <div class="col">
             <div class="card dashboard-card" onclick="location.href='/policy-management/view-by-years'">
                 <div class="card-body">
-                    <h5 class="card-title">View by Years</h5>
-                    <p class="card-text">List policies by duration in years.</p>
+                    <h5 class="card-title">View by Policy Term</h5>
+                    <p class="card-text">List policies by Policy Term.</p>
                 </div>
             </div>
         </div>
     </div>
+	<!-- View Policy Bought by Customer Card -->
+	<div class="col">
+	    <div class="card dashboard-card" onclick="location.href='/policy-management/view-bought-dashboard'">
+	        <div class="card-body">
+	            <h5 class="card-title">View Policy Bought by Customer</h5>
+	            <p class="card-text">Search bought policies by various criteria.</p>
+	        </div>
+	    </div>
+	</div>
     <!-- Display search results if flash attribute 'policies' exists -->
     <div th:if="${policies != null}" class="mt-4">
         <h4>Search Results:</h4>

@@ -3,9 +3,12 @@ package com.pms.controller;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import com.pms.entity.BoughtPolicy;
 import com.pms.entity.Customer;
 import com.pms.entity.Policy;
 import com.pms.entity.Scheme;
@@ -31,7 +34,7 @@ public class PolicyController {
     }
     
     @PostMapping("/viewCustPolicies")
-    public List<Policy> viewCustPolicies(@RequestBody Customer cust){
+    public List<BoughtPolicy> viewCustPolicies(@RequestBody Customer cust){
         return service.viewCustPolicies(cust.getId());
     }
     
@@ -86,9 +89,18 @@ public class PolicyController {
         return ResponseEntity.ok(policies);
     }
     
-    @GetMapping("/terms/{terms}")
+    @GetMapping("/terms/{term}")
     public ResponseEntity<List<Policy>> getPoliciesByPolicyTerm(@PathVariable Integer term) {
         List<Policy> policies = service.getPoliciesByPolicyTerm(term);
         return ResponseEntity.ok(policies);
+    }
+    
+    // New endpoint to support POST with request body for buying a policy.
+    @PostMapping("/buy")
+    public ResponseEntity<BoughtPolicy> buyPolicy(@RequestBody BoughtPolicy boughtPolicy) throws InvalidEntityException {
+        String policyId = boughtPolicy.getPolicy().getPolicyId();
+        String customerId = boughtPolicy.getCustomer().getId(); 
+        BoughtPolicy savedPolicy = service.buyPolicy(policyId, customerId);
+        return ResponseEntity.ok(savedPolicy);
     }
 }

@@ -19,7 +19,7 @@ import java.util.List;
 @RequestMapping("/claims")
 public class ClaimControllerUI {
 
-    private final String BASE_URL = "http://localhost:9797/api/claims"; // Match the backend API
+    private final String BASE_URL = "http://localhost:8030/api/claims"; // Match the backend API
 
     @Autowired
     private RestTemplate restTemplate;
@@ -117,7 +117,7 @@ public class ClaimControllerUI {
 
     // Fetch claims by policy ID
     @GetMapping("/policy")
-    public String getClaimsByPolicyId(@RequestParam(name = "policyId", required = false) Long policyId, Model model) {
+    public String getClaimsByPolicyId(@RequestParam(name = "policyId", required = false) String policyId, Model model) {
         try {
             if (policyId == null) {
                 model.addAttribute("errorMessage", "Policy ID is required.");
