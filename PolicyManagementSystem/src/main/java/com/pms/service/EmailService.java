@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
-
 import com.pms.entity.Claim;
 
 @Service
@@ -19,7 +18,6 @@ public class EmailService {
         message.setSubject(subject);
         message.setText(body);
         message.setFrom("policytrustproject@gmail.com");
-
         mailSender.send(message);
     }
     
@@ -28,9 +26,8 @@ public class EmailService {
         String body = "Dear " + name + ",\n\n" +
                       (isApproved 
                           ? "Congratulations! Your account has been approved. You can now log in and use our services."
-                          : "We regret to inform you that your account has been rejected/deactivated by Admin.\n\n Please Register with another Email.") +
+                          : "We regret to inform you that your account has been rejected/deactivated by Admin.\n\nPlease register with another email.") +
                       "\n\nThank you,\nPolicy Trust Team";
-
         sendEmail(email, subject, body);
     }
     
@@ -38,15 +35,12 @@ public class EmailService {
         String to = claim.getEmail(); 
         String subject = "Claim Status Updated";
         String body = "Dear User,\n\n" +
-                      "Thank you for your patience. Your claim with ID " + claim.getClaimId() +
-                      " has been updated to " + claim.getClaimStatus() + ".\n\n" +
-                      "Best regards,\nYour Team";
-
+                      "Your claim with ID " + claim.getClaimId() +
+                      " has been updated to " + claim.getClaimStatus() + ".\n\nBest regards,\nYour Team";
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(to);
         message.setSubject(subject);
-        message.setText(body); 
-
+        message.setText(body);
         mailSender.send(message); 
     }
 }

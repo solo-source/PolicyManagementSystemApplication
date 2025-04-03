@@ -6,12 +6,11 @@ import com.pms.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("payment")
+@CrossOrigin(origins = "http://localhost:8031")
 public class PaymentController {
 
     @Autowired
@@ -23,7 +22,7 @@ public class PaymentController {
     }
 
     @PostMapping("/viewCustPayments")
-    public List viewCustPayments(@RequestBody Customer cust) {
+    public List<Payment> viewCustPayments(@RequestBody Customer cust) {
        return paymentService.viewCustPayments(cust.getId());
     }
 

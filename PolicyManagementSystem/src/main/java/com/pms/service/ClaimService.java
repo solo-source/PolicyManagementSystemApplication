@@ -3,13 +3,11 @@ package com.pms.service;
 import com.pms.entity.Claim;
 import com.pms.entity.Policy;
 import com.pms.exception.InvalidEntityException;
-
 import com.pms.repository.ClaimRepository;
 import com.pms.repository.PolicyRepository;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.DecimalMax;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -32,7 +30,7 @@ public class ClaimService {
     private EmailService emailService;
 
     public List<Claim> getClaimsByPolicyId(String policyId) throws InvalidEntityException {
-    	if (policyId == null || policyId.trim().isEmpty()) {
+        if (policyId == null || policyId.trim().isEmpty()) {
             throw new InvalidEntityException("Invalid Policy ID.");
         }
         if (!policyRepository.existsById(policyId)) {
@@ -45,7 +43,7 @@ public class ClaimService {
         return claims;
     }
 
-    public Claim createClaim(@Valid Claim claim) throws  InvalidEntityException {
+    public Claim createClaim(@Valid Claim claim) throws InvalidEntityException {
         if (claim.getPolicy() == null || claim.getPolicy().getPolicyId() == null) {
             throw new InvalidEntityException("Policy ID is required to create a claim.");
         }
@@ -58,7 +56,6 @@ public class ClaimService {
         if (claim.getClaimStatus() == null) {
             throw new InvalidEntityException("Claim status cannot be null.");
         }
-
         claim.setPolicy(policy);
         return claimRepository.save(claim);
     }
@@ -89,7 +86,6 @@ public class ClaimService {
         Claim existingClaim = claimRepository.findById(id)
             .orElseThrow(() -> new InvalidEntityException("Claim not found with ID: " + id));
 
-        // Only update fields if they are present in the request
         if (updatedClaim.getClaimDescription() != null) {
             existingClaim.setClaimDescription(updatedClaim.getClaimDescription());
         }
@@ -99,16 +95,11 @@ public class ClaimService {
         if (updatedClaim.getEmail() != null) {
             existingClaim.setEmail(updatedClaim.getEmail());
         }
-
         Claim savedClaim = claimRepository.save(existingClaim);
-
-        // Send email after successful update
         emailService.sendClaimUpdateEmail(savedClaim);
-
         return savedClaim;
     }
-
-
+    
     private void sendClaimNotificationEmail(String recipientEmail, String subject, String message) throws InvalidEntityException {
         if (recipientEmail == null || recipientEmail.trim().isEmpty()) {
             throw new InvalidEntityException("Recipient email cannot be empty.");

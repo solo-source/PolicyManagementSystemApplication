@@ -10,8 +10,8 @@ public class Customer {
 	private String address;
 	private String regDate;
 	private String password;
-	private boolean verified;
-	private boolean active;
+	private Boolean verified;
+	private Boolean active;
 
 	public String getId() {
 		return id;

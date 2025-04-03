@@ -11,30 +11,24 @@ import com.pms.service.CustomerService;
 import com.pms.service.EmailService;
 import com.pms.service.PaymentService;
 import com.pms.service.PolicyService;
-
 import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/admin")
+@CrossOrigin(origins = "http://localhost:8031")
 public class AdminController {
 
     @Autowired
     AdminService service;
-
     @Autowired
     CustomerService custService;
-    
     @Autowired
     PolicyService pservice;
-    
     @Autowired
     PaymentService payservice;
-    
     @Autowired
     PolicyRepository policyRepository;
 
@@ -95,13 +89,10 @@ public class AdminController {
         Customer customer = service.getCustomerById(cust.getId());
         List<Policy> policies = pservice.viewCustPolicies(cust.getId());
         List<Payment> payments = payservice.viewCustPayments(cust.getId());
-
         return ResponseEntity.ok(new Object() {
             public final Customer customerDetails = customer;
             public final List<Policy> policyList = policies;
             public final List<Payment> paymentList = payments;
         });
     }
-
-
 }

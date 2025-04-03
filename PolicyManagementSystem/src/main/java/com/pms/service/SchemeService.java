@@ -2,13 +2,11 @@ package com.pms.service;
 
 import com.pms.exception.InvalidEntityException;
 import com.pms.entity.Scheme;
-import com.pms.entity.UserSchemes;
 import com.pms.repository.SchemeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -32,7 +30,6 @@ public class SchemeService {
                 .orElseThrow(() -> new InvalidEntityException("Scheme not found with ID: " + id)));
     }
 
-
     public Scheme createScheme(Scheme scheme) {
          log.info("Received payload for scheme creation: {}", scheme);
         Scheme savedScheme = schemeRepository.save(scheme);
@@ -42,14 +39,14 @@ public class SchemeService {
 
     public Scheme updateScheme(int id, Scheme schemeDetails) throws InvalidEntityException{
         return schemeRepository.findById(id).map(scheme -> {
-            log.info("Received payload for scheme update: {}", id , schemeDetails);
+            log.info("Received payload for scheme update: {} {}", id, schemeDetails);
             scheme.setSchemeDetails(schemeDetails.getSchemeDetails());
             scheme.setSchemeName(schemeDetails.getSchemeName());
             scheme.setDescription(schemeDetails.getDescription());
             scheme.setEligibilityCriteria(schemeDetails.getEligibilityCriteria());
             scheme.setBenefits(schemeDetails.getBenefits());
-            Scheme updatedScheme =  schemeRepository.save(scheme);
-            log.info("Received payload for scheme creation: {}", updatedScheme);
+            Scheme updatedScheme = schemeRepository.save(scheme);
+            log.info("Updated scheme: {}", updatedScheme);
             return updatedScheme;
         }).orElseThrow(() -> new InvalidEntityException("Scheme not found with id: " + id));
     }
@@ -58,7 +55,7 @@ public class SchemeService {
         schemeRepository.deleteById(id);
     }
 
-    public Scheme setSchemeActiveStatus(int id, boolean isActive)throws InvalidEntityException {
+    public Scheme setSchemeActiveStatus(int id, boolean isActive) throws InvalidEntityException {
         return schemeRepository.findById(id).map(scheme -> {
             scheme.setSchemeIsActive(isActive);
             return schemeRepository.save(scheme);
@@ -69,7 +66,7 @@ public class SchemeService {
         return schemeRepository.findBySchemeIsActiveIsTrue();
     }
 
-    public  List<Scheme> getAllSchemesBySchemeName(String schemeName) {
+    public List<Scheme> getAllSchemesBySchemeName(String schemeName) {
         return schemeRepository.findSchemeBySchemeNameAndSchemeIsActiveIsTrue(schemeName);
     }
 }

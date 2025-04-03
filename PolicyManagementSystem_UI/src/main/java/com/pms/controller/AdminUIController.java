@@ -16,7 +16,9 @@ import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pms.entity.Admin;
+import com.pms.entity.Claim;
 import com.pms.entity.Customer;
+import com.pms.entity.Feedback;
 import com.pms.entity.Payment;
 import com.pms.entity.Policy;
 import com.pms.entity.Scheme;
@@ -208,25 +210,17 @@ public class AdminUIController {
 		}
 		return "adminHomePage";
 	}
-	@GetMapping("/viewPoliciesInAdmin")
-	public String viewPoliciesInAdmin(Model model) {
+	@GetMapping("/policyDashboard")
+	public String showPolicyDashboard(Model model) {
 	    ResponseEntity<List> response = restTemplate.getForEntity(BASE_URL + "/policy/viewPolicies", List.class);
 	    model.addAttribute("policies", response.getBody());
-	    return "policyListInAdmin";
+	    return "policyDashboard";
 	}
-	
-	@GetMapping("/viewPolicyDetailsInAdmin")
-	public String showPolicyDetailsInAdmin(@RequestParam("policyId") Long policyId, Model model) {
-		  Policy p = new Policy();
-		  p.setPolicyId(policyId);
-	    ResponseEntity<Policy> response = restTemplate.postForEntity(BASE_URL + "/policy/viewPolicyDetails", p, Policy.class);
-	    model.addAttribute("policy", response.getBody());
-	    return "policyPageInAdmin";
-	}
+
 	
 	@GetMapping("/viewSchemesInAdmin")
 	public String viewSchemesInAdmin(Model model) {
-		ResponseEntity<List> response = restTemplate.getForEntity(BASE_URL + "/scheme/viewSchemes", List.class);
+		ResponseEntity<List> response = restTemplate.getForEntity(BASE_URL + "/api/schemes/viewSchemes", List.class);
 	    model.addAttribute("schemes", response.getBody());
 	    return "adminSchemesList";
 	}
@@ -257,8 +251,21 @@ public class AdminUIController {
 
 	    return "view-customer";
 	}
+	
+	@GetMapping("/index")
+    public String showHomePage(Model model) {
+        Claim claim = new Claim();
+        claim.setPolicy(new Policy()); 
+        model.addAttribute("claim", claim);
+        return "index";
+    }
 
-
+	@GetMapping("/admin")
+    public String viewAdminFeedback(@RequestParam(required = false) Integer schemeId, 
+                                    @RequestParam(required = false) String status, 
+                                    Model model) {
+        return "admin-feedback";
+    }
 
 	
 }
