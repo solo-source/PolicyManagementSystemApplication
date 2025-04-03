@@ -1,5 +1,6 @@
 package com.pms.controller;
 
+import com.pms.entity.Policy;
 import com.pms.entity.Scheme;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +59,56 @@ public class SchemeUIController {
         return "scheme-list";
     }
 
+    @GetMapping("/{schemeId}/policies")
+
+    public String getPoliciesBySchemeId(@PathVariable int schemeId, Model model) {
+
+        try {
+
+            Policy[] policiesArray = restTemplate.getForObject(baseUrl + "/{schemeId}/policies", Policy[].class, schemeId);
+
+            List<Policy> policies = Arrays.asList(policiesArray);
+
+            model.addAttribute("policies", policies);
+
+        } catch (Exception e) {
+
+            model.addAttribute("errorMessages", Arrays.asList("Failed to load policies: " + e.getMessage()));
+
+            model.addAttribute("policies", List.of());
+
+        }
+
+        return "policy-list";
+
+    }
+    
+    @GetMapping("/linked-policies/{schemeId}")
+
+    public String viewLinkedPolicies(@PathVariable int schemeId, Model model) {
+
+        try {
+
+            Policy[] policiesArray = restTemplate.getForObject(baseUrl + "/{schemeId}/policies", Policy[].class, schemeId);
+
+            List<Policy> policies = Arrays.asList(policiesArray);
+
+            model.addAttribute("policies", policies);
+
+            model.addAttribute("schemeId", schemeId);
+
+        } catch (Exception e) {
+
+            model.addAttribute("errorMessage", "Failed to load policies: " + e.getMessage());
+
+            model.addAttribute("policies", List.of());
+
+        }
+
+        return "policy-list";
+
+    }
+    
     @GetMapping("/search")
     public String searchSchemeByName(@RequestParam(name = "schemeName", required = false) String schemeName, Model model) {
         if (schemeName == null || schemeName.trim().isEmpty()) {

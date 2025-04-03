@@ -68,10 +68,10 @@
     <div class="form-container">
         <form th:action="@{/feedback/update}" method="post" th:object="${feedback}">
             <label>Scheme ID:</label>
-            <input type="number" th:field="*{scheme.schemeId}" readonly required />
+            <input type="number" th:field="*{scheme.id}" readonly required />
 
             <label>Customer ID:</label>
-            <input type="number" th:field="*{customer.customerId}" readonly required />
+            <input type="number" th:field="*{customer.id}" readonly required />
             
             <label>New Rating:</label>
             <select th:field="*{rating}">

@@ -1,6 +1,7 @@
 package com.pms.controller;
 
 import com.pms.entity.Admin;
+import com.pms.entity.BoughtPolicy;
 import com.pms.entity.Customer;
 import com.pms.entity.Payment;
 import com.pms.entity.Policy;
@@ -87,11 +88,11 @@ public class AdminController {
     @PostMapping("/viewCustomerDetailsWithPoliciesAndPayments")
     public ResponseEntity<?> viewCustomerDetailsWithPoliciesAndPayments(@RequestBody Customer cust) throws InvalidEntityException {
         Customer customer = service.getCustomerById(cust.getId());
-        List<Policy> policies = pservice.viewCustPolicies(cust.getId());
+        List<BoughtPolicy> policies = pservice.viewCustPolicies(cust.getId());
         List<Payment> payments = payservice.viewCustPayments(cust.getId());
         return ResponseEntity.ok(new Object() {
             public final Customer customerDetails = customer;
-            public final List<Policy> policyList = policies;
+            public final List<BoughtPolicy> policyList = policies;
             public final List<Payment> paymentList = payments;
         });
     }

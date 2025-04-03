@@ -139,7 +139,7 @@
 <body>
     <header class="navbar">
         <h1>View Claims</h1>
-        <a th:href="@{/claims}">Back to Home</a>
+        <a th:href="@{/index}">Back to Claim Dashboard</a>
     </header>
 
     <main>
@@ -153,7 +153,7 @@
             <h2>View Claims by Policy ID</h2>
             <form th:action="@{/claims/policy}" method="get">
                 <label for="policyId">Enter Policy ID:</label>
-                <input type="number" name="policyId" required />
+                <input type="text" name="policyId" required />
                 <button type="submit" class="btn">Search Claims</button>
             </form>
 

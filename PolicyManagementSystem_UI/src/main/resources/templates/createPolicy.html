@@ -46,26 +46,28 @@
             <label for="policyStatus" class="form-label">Policy Status</label>
             <select id="policyStatus" class="form-select" required>
                 <option value="" selected>Please select policy status</option>
-                <option value="Active">Active</option>
-                <option value="Deactivated">Deactivated</option>
+                <option value="ACTIVE">ACTIVE</option>
+                <option value="INACTIVE">INACTIVE</option>
             </select>
         </div>
         <div class="mb-3">
             <label for="annuityTerm" class="form-label">Annuity Term</label>
             <select id="annuityTerm" class="form-select" required>
                 <option value="" selected>Please select annuity term</option>
-                <option value="Yearly">Yearly</option>
-                <option value="Monthly">Monthly</option>
+                <option value="ONE_TIME">ONE TIME</option>
+                <option value="QUARTERLY">QUARTERLY</option>
+				<option value="HALF_YEARLY">HALF YEARLY</option>
+				<option value="ANNUAL">ANNUAL</option>
             </select>
         </div>
         <button type="submit" class="btn btn-primary">Create Policy</button>
-        <a href="/policy-management/dashboard" class="btn btn-secondary ms-2">Back to Dashboard</a>
+        <a href="/policyDashboard" class="btn btn-secondary ms-2">Back to Dashboard</a>
     </form>
 </div>
 <script>
     document.getElementById("createPolicyForm").addEventListener("submit", function(e){
         e.preventDefault();
-        var backendUrl = "http://localhost:7281/api/policies";
+        var backendUrl = "http://localhost:8030/policy";
         var data = {
             // Remove customer field
             scheme: { id: document.getElementById("schemeId").value },
@@ -90,7 +92,7 @@
         })
         .then(result => {
             alert("Success: Policy created with ID " + result.policyId);
-            window.location.href = "/policy-management/dashboard";
+            window.location.href = "/policyDashboard";
         })
         .catch(error => {
             alert("Error: " + error.message);

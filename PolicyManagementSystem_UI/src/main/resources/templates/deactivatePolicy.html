@@ -17,19 +17,19 @@
     <form id="deactivatePolicyForm">
         <div class="mb-3">
             <label for="policyIdToDeactivate" class="form-label">Policy ID</label>
-            <input type="number" id="policyIdToDeactivate" class="form-control" placeholder="Enter numeric policy ID" required min="1" />
+            <input type="text" id="policyIdToDeactivate" class="form-control" placeholder="Enter numeric policy ID" required min="1" />
         </div>
         <button type="submit" class="btn btn-danger">Deactivate Policy</button>
-        <a href="/policy-management/dashboard" class="btn btn-secondary ms-2">Back to Dashboard</a>
+        <a href="/policyDashboard" class="btn btn-secondary ms-2">Back to Dashboard</a>
     </form>
 </div>
 <script>
     document.getElementById("deactivatePolicyForm").addEventListener("submit", function(e){
         e.preventDefault();
-        var backendUrl = "http://localhost:7281/api/policies";
+        var backendUrl = "http://localhost:8030/policy";
         var policyId = document.getElementById("policyIdToDeactivate").value;
         // We only update policyStatus to "Deactivated"
-        var data = { policyStatus: "Deactivated" };
+        var data = { policyStatus: "INACTIVE" };
         fetch(backendUrl + "/update/" + policyId, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
@@ -43,7 +43,7 @@
         })
         .then(result => {
             alert("Success: Policy deactivated with ID " + result.policyId);
-            window.location.href = "/policy-management/dashboard";
+            window.location.href = "/policyDashboard";
         })
         .catch(error => {
             alert("Error: " + error.message);

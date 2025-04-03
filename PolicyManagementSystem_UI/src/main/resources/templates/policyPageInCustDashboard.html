@@ -76,7 +76,9 @@
             <p><strong>Annuity Term:</strong> <span th:text="${policy.annuityTerm}"></span></p>
         </div>
 		<span class="back-button" onclick="goBack()">Back</span>
-		<a class="buy-btn">Buy</a>
+    <div>
+		<a th:href="@{/buyPolicy(policyId=${policy.policyId})}" class="buy-btn">Buy</a>
+    </div>
     </div>
 </body>
 <script>

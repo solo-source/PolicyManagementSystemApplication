@@ -24,12 +24,12 @@
             <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th>ID</th>
+                        <th>Policy Name</th>
                         <th>Policy ID</th>
                         <th>Start Date</th>
                         <th>Total Premium</th>
                         <th>Maturity</th>
-                        <th>Years</th>
+                        <th>Term</th>
                         <th>Status</th>
                         <th>Annuity</th>
                     </tr>
@@ -44,7 +44,7 @@
 document.getElementById("viewBySchemeForm").addEventListener("submit", function(e){
     e.preventDefault();
     var schemeName = document.getElementById("schemeName").value;
-    fetch("http://localhost:7281/api/policies/scheme/" + schemeName)
+    fetch("http://localhost:8030/policy/scheme/" + schemeName)
     .then(response => {
         if(!response.ok) {
             return response.text().then(text => { throw new Error(text); });
@@ -59,12 +59,12 @@ document.getElementById("viewBySchemeForm").addEventListener("submit", function(
         } else {
             data.forEach(function(p){
                 var row = "<tr>" +
-                    "<td>" + p.id + "</td>" +
+                    "<td>" + p.policyname + "</td>" +
                     "<td>" + p.policyId + "</td>" +
                     "<td>" + p.startDate + "</td>" +
                     "<td>" + p.totalPremiumAmount + "</td>" +
                     "<td>" + p.maturityAmount + "</td>" +
-                    "<td>" + p.numberOfYears + "</td>" +
+                    "<td>" + p.policyterm + "</td>" +
                     "<td>" + p.policyStatus + "</td>" +
                     "<td>" + p.annuityTerm + "</td>" +
                     "</tr>";

@@ -2,6 +2,7 @@ package com.pms.controller;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -217,6 +218,21 @@ public class AdminUIController {
 	    return "policyDashboard";
 	}
 
+	@GetMapping("/viewPolicyDetailsInAdmin")
+
+	public String showPolicyDetailsInAdmin(@RequestParam("policyId") String policyId, Model model) {
+
+	Policy p = new Policy();
+
+	p.setPolicyId(policyId);
+
+	ResponseEntity<Policy> response = restTemplate.postForEntity(BASE_URL + "/policy/viewPolicyDetails", p, Policy.class);
+
+	model.addAttribute("policy", response.getBody());
+
+	return "policyPageInAdmin";
+
+	}
 	
 	@GetMapping("/viewSchemesInAdmin")
 	public String viewSchemesInAdmin(Model model) {

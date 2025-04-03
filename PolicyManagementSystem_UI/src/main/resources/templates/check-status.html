@@ -108,12 +108,12 @@
         <div th:if="${feedbackList}" class="feedback-details">
             <h3>Feedback Details</h3>
 			<div th:each="feedback : ${feedbackList}">
-			    <p><strong>Customer Name:</strong> <span th:text="${feedback.customer.customerName}"></span></p>
+			    <p><strong>Customer Name:</strong> <span th:text="${feedback.customer.name}"></span></p>
 			    <p><strong>Rating:</strong> <span th:text="${feedback.rating}"></span> ⭐</p>
 			    <p><strong>Comments:</strong> <span th:text="${feedback.comments}"></span></p>
 			    <p><strong>Status:</strong> <span th:text="${feedback.status}"></span></p> <!-- Added status -->
 				<button class="update-btn"
-				        th:attr="onclick=|location.href='/feedback/update?schemeId='+${feedback.scheme.schemeId}+'&customerId='+${feedback.customer.customerId}|">
+				        th:attr="onclick=|location.href='/feedback/update?schemeId='+${feedback.scheme.id}+'&customerId='+${feedback.customer.id}|">
 				    Update
 				</button>
 			    <hr/>

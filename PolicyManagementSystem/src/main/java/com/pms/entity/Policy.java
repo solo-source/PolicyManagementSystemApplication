@@ -22,7 +22,7 @@ public class Policy {
     private String policyName; // New field
 
     @Column(name = "start_date")
-    @NotNull(message = "Start date is required")
+    @NotNull(message = "Start date is required")	
     private LocalDate startDate;
 
     @Column(name = "total_premium_amount", nullable = false)
@@ -45,12 +45,6 @@ public class Policy {
     @Enumerated(EnumType.STRING)
     @Column(name = "annuity_term")
     private AnnuityTerm annuityTerm;
-
-    // Allow customer to be nullable since policy isn’t linked yet
-    @JsonBackReference(value="customer-policies")
-    @ManyToOne
-    @JoinColumn(name = "customer_id", nullable = true)
-    private Customer customer;
     
     @JsonBackReference(value="scheme-policies")
     @ManyToOne
@@ -116,12 +110,6 @@ public class Policy {
     }
     public void setAnnuityTerm(AnnuityTerm annuityTerm) {
         this.annuityTerm = annuityTerm;
-    }
-    public Customer getCustomer() {
-        return customer;
-    }
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
     }
     public Scheme getScheme() {
         return scheme;

@@ -1,12 +1,16 @@
 package com.pms.controller;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -30,6 +34,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pms.entity.Customer;
 import com.pms.entity.Policy;
 import com.pms.entity.Scheme;
+import com.pms.entity.BoughtPolicy;
 
 @Controller
 public class CustomerUIController {
@@ -48,8 +53,20 @@ public class CustomerUIController {
 		return "contact";
 	}
 	@GetMapping("/custHomeDashboard")
-	public String custHomeDashboard() {
-		return "custHomeDashboard";
+	public String custHomeDashboard(HttpSession session, Model model) {
+	    // Log session attributes
+	    System.out.println("Session ID: " + session.getId());
+	    System.out.println("LoggedInCustomer in session: " + session.getAttribute("loggedInCustomer"));
+
+	    Customer customer = (Customer) session.getAttribute("loggedInCustomer");
+
+	    if (customer == null) {
+	        System.out.println("Customer is null, redirecting to login.");
+	        return "redirect:/login";
+	    }
+
+	    model.addAttribute("customer", customer);
+	    return "custHomeDashboard";
 	}
 
 	@GetMapping("/register")
@@ -177,7 +194,8 @@ public class CustomerUIController {
 	        Customer customer = response.getBody();
 
 	        if (customer != null) {
-	            session.setAttribute("loggedInCustomer", customer);
+	        	session.setAttribute("loggedInCustomer", customer);
+	        	System.out.println("Customer stored in session: " + customer);
 	            model.addAttribute("customer", customer);
 	            return "dashboard";
 	        }
@@ -292,7 +310,7 @@ public class CustomerUIController {
 	}
 	
 	@GetMapping("/viewPolicyDetails")
-	public String showPolicyDetails(@RequestParam("policyId") Long policyId, Model model) {
+	public String showPolicyDetails(@RequestParam("policyId") String policyId, Model model) {
 		  Policy p = new Policy();
 		  p.setPolicyId(policyId);
 	    ResponseEntity<Policy> response = restTemplate.postForEntity(BASE_URL + "/policy/viewPolicyDetails", p, Policy.class);
@@ -312,7 +330,7 @@ public class CustomerUIController {
 	}
 	
 	@GetMapping("/viewPolicyDetailsInCustDashboard")
-	public String showPolicyDetailsInCustDashboard(@RequestParam("policyId") Long policyId, Model model) {
+	public String showPolicyDetailsInCustDashboard(@RequestParam("policyId") String policyId, Model model) {
 		  Policy p = new Policy();
 		  p.setPolicyId(policyId);
 	    ResponseEntity<Policy> response = restTemplate.postForEntity(BASE_URL + "/policy/viewPolicyDetails", p, Policy.class);
@@ -338,20 +356,48 @@ public class CustomerUIController {
 	
 	@GetMapping("/custPolicies")
 	public String custPolicies(Model model, HttpSession session) {
-		Customer customer = (Customer) session.getAttribute("loggedInCustomer");
-		ResponseEntity<List> response = restTemplate.postForEntity(BASE_URL + "/policy/viewCustPolicies",customer, List.class);
-		model.addAttribute("policies", response.getBody());
-		return "custPolicyList";
+	    Customer customer = (Customer) session.getAttribute("loggedInCustomer");
+
+	    // Set the request headers for JSON
+	    HttpHeaders headers = new HttpHeaders();
+	    headers.setContentType(MediaType.APPLICATION_JSON);
+
+	    // Wrap customer object in HttpEntity with headers
+	    HttpEntity<Customer> request = new HttpEntity<>(customer, headers);
+
+	    // Make the POST request with JSON headers,
+	    // NOTE: Changed ParameterizedTypeReference to List<BoughtPolicy>
+	    ResponseEntity<List<BoughtPolicy>> response = restTemplate.exchange(
+	        BASE_URL + "/policy/viewCustPolicies",
+	        HttpMethod.POST,
+	        request,
+	        new ParameterizedTypeReference<List<BoughtPolicy>>() {}
+	    );
+
+	    model.addAttribute("policies", response.getBody());
+	    return "custPolicyList";
 	}
+
+
 	
 	@GetMapping("/viewCustPolicyDetails")
-	public String showCustPolicyDetails(@RequestParam("policyId") Long policyId, Model model) {
-		  Policy p = new Policy();
-		  p.setPolicyId(policyId);
-	    ResponseEntity<Policy> response = restTemplate.postForEntity(BASE_URL + "/policy/viewPolicyDetails", p, Policy.class);
-	    model.addAttribute("policy", response.getBody());
+	public String showCustPolicyDetails(@RequestParam("policyId") String policyId, Model model) {
+	    // Prepare a BoughtPolicy instance with the policy identifier (or adjust based on your logic)
+	    BoughtPolicy bp = new BoughtPolicy();
+	    bp.setBoughtPolicyId(policyId);
+	    
+	    // Call the backend endpoint that returns a BoughtPolicy.
+	    ResponseEntity<BoughtPolicy> response = restTemplate.postForEntity(
+	        BASE_URL + "/policy/viewPolicyDetails",
+	        bp,
+	        BoughtPolicy.class
+	    );
+	    
+	    // Add the object to the model using the name "boughtPolicy" that matches the template
+	    model.addAttribute("boughtPolicy", response.getBody());
 	    return "policyPageInCust";
 	}
+
 	
 	@GetMapping("/viewSchemesInCustDashboard")
 	public String viewSchemesInCustDashboard(Model model) {

@@ -3,7 +3,7 @@ package com.pms.entity;
 import java.time.LocalDate;
 
 public class Policy {
-    private Long policyId;
+    private String policyId;
     private String policyName; // New field
     private LocalDate startDate;
     private Double totalPremiumAmount;
@@ -23,11 +23,11 @@ public class Policy {
 
     // Getters and setters
 
-    public Long getPolicyId() {
+    public String getPolicyId() {
         return policyId;
     }
-    public void setPolicyId(Long policyId) {
-        this.policyId = policyId;
+    public void setPolicyId(String policyId2) {
+        this.policyId = policyId2;
     }
 
     public String getPolicyName() {

@@ -107,13 +107,13 @@
         <div th:if="${feedbackList}" class="feedback-details">
             <h3>Feedback List</h3>
             <div th:each="feedback : ${feedbackList}">
-                <p><strong>Customer:</strong> <span th:text="${feedback.customer.customerName}"></span></p>
+                <p><strong>Customer:</strong> <span th:text="${feedback.customer.name}"></span></p>
                 <p><strong>Rating:</strong> <span th:text="${feedback.rating}"></span></p>
                 <p><strong>Comments:</strong> <span th:text="${feedback.comments}"></span></p>
                 <p><strong>Status:</strong> <span th:text="${feedback.status}"></span></p>
                 <form th:action="@{/feedback/updateStatus}" method="post">
                     <input type="hidden" name="feedbackId" th:value="${feedback.id}">
-                    <input type="hidden" name="schemeId" th:value="${feedback.scheme.schemeId}">
+                    <input type="hidden" name="schemeId" th:value="${feedback.scheme.id}">
                     <select name="status">
                         <option value="pending">Pending</option>
                         <option value="reviewed">Reviewed</option>

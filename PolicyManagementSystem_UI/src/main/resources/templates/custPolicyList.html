@@ -58,8 +58,9 @@
         <h2>Policy List</h2>
         <div class="policy-grid">
             <div th:each="policy : ${policies}" class="policy-card">
-                <h3>Policy ID: <span th:text="${policy.policyId}"></span></h3>
-                <a th:href="@{/viewCustPolicyDetails(policyId=${policy.policyId})}" class="view-details">View Details</a>
+                <!-- Use boughtPolicyId property -->
+                <h3>Policy ID: <span th:text="${policy.boughtPolicyId}"></span></h3>
+                <a th:href="@{/viewCustPolicyDetails(policyId=${policy.boughtPolicyId})}" class="view-details">View Details</a>
             </div>
         </div>
     </div>
