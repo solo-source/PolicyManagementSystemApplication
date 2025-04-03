@@ -9,5 +9,5 @@ import java.util.List;
 public interface FeedbackRepository extends JpaRepository<Feedback, Long> {
     List<Feedback> findByScheme(Scheme scheme);
     List<Feedback> findBySchemeAndCustomer(Scheme scheme, Customer customer);
-    List<Feedback> findBySchemeAndStatus(Scheme scheme, String status); // For admin filter
+    List<Feedback> findBySchemeAndStatus(Scheme scheme, String status);
 }

@@ -12,7 +12,6 @@ import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -32,28 +31,26 @@ public class FeedbackService {
     private JavaMailSender mailSender;
     
     public Feedback submitFeedback(Feedback feedback) throws InvalidEntityException {
-    	Optional<Scheme> schemeOpt = schemeRepository.findById(feedback.getScheme().getId());
-    	Optional<Customer> customerOpt = customerRepository.findById(feedback.getCustomer().getId());
+        Optional<Scheme> schemeOpt = schemeRepository.findById(feedback.getScheme().getId());
+        Optional<Customer> customerOpt = customerRepository.findById(feedback.getCustomer().getId());
 
-    	if (schemeOpt.isEmpty()) {
-    		throw new InvalidEntityException("Invalid Scheme ID: " + feedback.getScheme().getId());
-    	}
-    	if (customerOpt.isEmpty()) {
-    		throw new InvalidEntityException("Invalid Customer ID: " + feedback.getCustomer().getId());
-    	}
+        if (schemeOpt.isEmpty()) {
+            throw new InvalidEntityException("Invalid Scheme ID: " + feedback.getScheme().getId());
+        }
+        if (customerOpt.isEmpty()) {
+            throw new InvalidEntityException("Invalid Customer ID: " + feedback.getCustomer().getId());
+        }
 
-    	Scheme scheme = schemeOpt.get();
-    	Customer customer = customerOpt.get();
+        Scheme scheme = schemeOpt.get();
+        Customer customer = customerOpt.get();
 
-    	// Update customerName if provided
-    	if (feedback.getCustomer().getName() != null) {
-    		customer.setName(feedback.getCustomer().getName());
-    		customerRepository.save(customer);
-    	}
-
-    	feedback.setScheme(scheme);
-    	feedback.setCustomer(customer);
-    	feedback.setStatus("pending"); // Default status
+        if (feedback.getCustomer().getName() != null) {
+            customer.setName(feedback.getCustomer().getName());
+            customerRepository.save(customer);
+        }
+        feedback.setScheme(scheme);
+        feedback.setCustomer(customer);
+        feedback.setStatus("pending");
         return feedbackRepository.save(feedback);
     }
     
@@ -90,20 +87,16 @@ public class FeedbackService {
         if (customerOpt.isEmpty()) {
             throw new InvalidEntityException("Invalid Customer ID: " + customerId);
         }
-
         Scheme scheme = schemeOpt.get();
         Customer customer = customerOpt.get();
-
         List<Feedback> existingFeedbacks = feedbackRepository.findBySchemeAndCustomer(scheme, customer);
         if (existingFeedbacks.isEmpty()) {
             throw new InvalidEntityException("Feedback not found for Scheme ID: " + schemeId + " and Customer ID: " + customerId);
         }
-
         Feedback existingFeedback = existingFeedbacks.get(0);
         existingFeedback.setRating(feedback.getRating());
         existingFeedback.setComments(feedback.getComments());
         return feedbackRepository.save(existingFeedback);
-//        return null;
     }
     
     public List<Feedback> getFeedbackByScheme(int schemeId) throws InvalidEntityException {
@@ -137,16 +130,16 @@ public class FeedbackService {
             throw new InvalidEntityException("Feedback not found for Scheme ID: " + schemeId + " and Customer ID: " + customerId);
         }
         return feedbacks;
-    	//return null;
     }
+    
     public void sendFeedbackNotification(String feedbackMessage) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo("23102081@rmd.ac.in");
         message.setSubject("Feedback Received");
         message.setText("Dear User,\n\nThank you for your feedback!\n\n" + feedbackMessage + "\n\nBest Regards,\nYour Company");
-        try{
-        mailSender.send(message);
-        }catch (MailException e) {
+        try {
+            mailSender.send(message);
+        } catch (MailException e) {
             System.err.println("Failed to send email: " + e.getMessage());
         }
     }

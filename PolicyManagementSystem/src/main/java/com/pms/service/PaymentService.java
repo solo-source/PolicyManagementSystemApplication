@@ -34,10 +34,9 @@ public class PaymentService {
     }
 
     @Transactional
-    public Payment createPayment(String paymentId,String customerId, String policyId, Double amount, Payment.PaymentType paymentType) {
+    public Payment createPayment(String paymentId, String customerId, String policyId, Double amount, Payment.PaymentType paymentType) {
         Optional<Customer> customerOpt = customerRepository.findById(customerId);
         Optional<Policy> policyOpt = policyRepository.findByPolicyId(policyId);
-
         if (customerOpt.isPresent() && policyOpt.isPresent()) {
             Payment payment = new Payment();
             payment.setPaymentId(paymentId);
@@ -46,7 +45,6 @@ public class PaymentService {
             payment.setPaymentType(paymentType);
             payment.setCustomer(customerOpt.get());
             payment.setPolicy(policyOpt.get());
-
             return paymentRepository.save(payment);
         } else {
             throw new RuntimeException("Customer or Policy not found");
@@ -59,23 +57,7 @@ public class PaymentService {
 
     public List<Payment> viewCustPayments(String customerId) {
         List<Payment> payments = paymentRepository.findByCustomerId(customerId);
-
-        for (Payment payment : payments) {
-            if (payment.getPolicy() == null) {  
-                Optional<Policy> policyOpt = policyRepository.findById(
-                    payment.getCustomer().getPolicies().stream()
-                    .filter(policy -> policy.getPayments().contains(payment))
-                    .map(Policy::getPolicyId)
-                    .findFirst()
-                    .orElse(null)
-                );
-                policyOpt.ifPresent(payment::setPolicy);
-            }
-        }
-
+        // Optionally ensure that payment's policy is set if needed
         return payments;
     }
-
-
-
 }

@@ -3,13 +3,11 @@ package com.pms.service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.pms.entity.Policy;
 import com.pms.entity.Policy.PolicyStatus;
-import com.pms.entity.Policy.AnnuityTerm;
+import com.pms.entity.AnnuityTerm; // Use external enum
 import com.pms.exception.InvalidEntityException;
 import com.pms.repository.CustomerRepository;
 import com.pms.repository.PolicyRepository;
@@ -31,10 +29,7 @@ public class PolicyService {
         return repo.findAll();
     }
 
-    // Assuming getPolicyId() returns a unique identifier of type String (the business key)
     public Optional<Policy> viewPolicyDetails(Policy p) {
-        // If your primary key is a Long (e.g. id) and policyId is a business key,
-        // adjust the finder method accordingly.
         return repo.findByPolicyId(p.getPolicyId());
     }
 
@@ -47,20 +42,13 @@ public class PolicyService {
     }
     
     public Policy createPolicy(Policy policy) throws InvalidEntityException {
-        // Validate if Customer exists (must be provided)
-        if (policy.getCustomer() == null || policy.getCustomer().getId() == null ||
-            !customerRepo.existsById(policy.getCustomer().getId())) {
-            throw new InvalidEntityException("Customer not found with id " +
-                (policy.getCustomer() != null ? policy.getCustomer().getId() : "null"));
-        }
-        // Validate if Scheme exists (must be provided)
+        // Remove the customer check, since policy may be created without a customer
         if (policy.getScheme() == null || policy.getScheme().getId() == null ||
             !schemeRepo.existsById(policy.getScheme().getId())) {
             throw new InvalidEntityException("Scheme not found with id " +
                 (policy.getScheme() != null ? policy.getScheme().getId() : "null"));
         }
         
-        // Validate numeric and other fields
         if (policy.getStartDate() == null) {
             throw new IllegalArgumentException("Start date must be provided and be a valid date.");
         }
@@ -73,13 +61,11 @@ public class PolicyService {
         if (policy.getPolicyTerm() == null || policy.getPolicyTerm() <= 0) {
             throw new IllegalArgumentException("Policy Term must be a positive number.");
         }
-        // Validate PolicyStatus using enum comparison
         if (policy.getPolicyStatus() == null ||
             (policy.getPolicyStatus() != PolicyStatus.ACTIVE &&
              policy.getPolicyStatus() != PolicyStatus.INACTIVE)) {
             throw new IllegalArgumentException("Policy status must be either ACTIVE or INACTIVE.");
         }
-     // Validate AnnuityTerm using enum comparison
         if (policy.getAnnuityTerm() == null ||
             (policy.getAnnuityTerm() != AnnuityTerm.QUARTERLY &&
              policy.getAnnuityTerm() != AnnuityTerm.HALF_YEARLY &&
@@ -88,7 +74,6 @@ public class PolicyService {
             throw new IllegalArgumentException("Annuity Term must be one of: QUARTERLY, HALF_YEARLY, ANNUAL, ONE_TIME.");
         }
 
-     // Generate a new policyId by checking the last record based on policy_id.
         Policy lastPolicy = repo.findTopByOrderByPolicyIdDesc();
         String newPolicyId;
         if (lastPolicy == null || lastPolicy.getPolicyId() == null) {
@@ -100,17 +85,15 @@ public class PolicyService {
             newPolicyId = String.format("POLICY%03d", newNumber);
         }
 
-        // Set the auto-generated policyId; user input is ignored for this field.
         policy.setPolicyId(newPolicyId);
-        
         return repo.save(policy);
     }
+
     
     public Policy updatePolicy(String id, Policy policyDetails) throws InvalidEntityException {
         Policy existingPolicy = repo.findByPolicyId(id)
                 .orElseThrow(() -> new InvalidEntityException("Policy not found with id " + id));
 
-        // Disallow update of restricted fields:
         if (policyDetails.getCustomer() != null) {
             throw new IllegalArgumentException("Customer field is not allowed in policy update.");
         }
@@ -121,7 +104,6 @@ public class PolicyService {
             throw new IllegalArgumentException("Policy ID field is not allowed in policy update.");
         }
 
-        // Update allowed fields if provided
         if (policyDetails.getStartDate() != null) {
             existingPolicy.setStartDate(policyDetails.getStartDate());
         }
@@ -147,11 +129,7 @@ public class PolicyService {
             existingPolicy.setPolicyTerm(policyDetails.getPolicyTerm());
         }
 
-        // For updating PolicyStatus, assume that policyDetails carries a String representation.
-        // Convert the string to the enum before setting.
         if (policyDetails.getPolicyStatus() != null) {
-            // If the incoming type is already enum, then no trim() is available.
-            // One approach is to expect a String from the client. If so, you could use:
             String statusStr = policyDetails.getPolicyStatus().toString();
             if (!(statusStr.equalsIgnoreCase("ACTIVE") || statusStr.equalsIgnoreCase("INACTIVE"))) {
                 throw new IllegalArgumentException("Policy status must be either ACTIVE or INACTIVE.");
@@ -172,14 +150,8 @@ public class PolicyService {
             existingPolicy.setAnnuityTerm(newTerm);
         }
 
-
         return repo.save(existingPolicy);
     }
-    
-//    public Policy getPolicyById(String id) throws InvalidEntityException {
-//        return repo.findByPolicyId(id)
-//                .orElseThrow(() -> new InvalidEntityException("Policy not found with id " + id));
-//    }
     
     public Policy getPolicyByPolicyId(String policyId) throws InvalidEntityException {
         return repo.findByPolicyId(policyId)

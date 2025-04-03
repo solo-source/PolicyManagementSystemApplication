@@ -7,16 +7,10 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PolicyRepository extends JpaRepository<Policy, String> {
-
     List<Policy> findByCustomerId(String id);
-
-    List<Policy> findBySchemeId(int id);
-    
+    List<Policy> findBySchemeId(Integer id);
     Optional<Policy> findByPolicyId(String policyId);
-    
-//    Policy findTopByOrderByIdDesc();
     Policy findTopByOrderByPolicyIdDesc();
-    
     List<Policy> findBySchemeSchemeName(String schemeName);
     List<Policy> findByStartDate(LocalDate startDate);
     List<Policy> findByTotalPremiumAmountBetween(Double min, Double max);

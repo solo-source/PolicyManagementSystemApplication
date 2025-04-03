@@ -1,11 +1,11 @@
 package com.pms.exception;
 
-public class InvalidEntityException extends Exception{
+public class InvalidEntityException extends Exception {
 
-	public InvalidEntityException(String message) {
-		super(message);
-	}
-	public InvalidEntityException() {
-		
-	}
+    public InvalidEntityException(String message) {
+        super(message);
+    }
+    
+    public InvalidEntityException() {
+    }
 }

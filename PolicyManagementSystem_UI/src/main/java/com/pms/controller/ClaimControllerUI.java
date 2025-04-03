@@ -25,7 +25,7 @@ public class ClaimControllerUI {
     private RestTemplate restTemplate;
 
     // Load homepage with an empty claim object
-    @GetMapping("")
+    @GetMapping("/index")
     public String showHomePage(Model model) {
         Claim claim = new Claim();
         claim.setPolicy(new Policy()); 

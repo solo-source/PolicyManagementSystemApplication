@@ -1,18 +1,13 @@
-
 package com.pms.entity;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import java.time.LocalDate;
-import java.util.List;import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Pattern;
 import java.time.LocalDate;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.util.List;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -22,6 +17,9 @@ public class Policy {
     @Id
     @Column(name = "policy_id", nullable = false)
     private String policyId;
+
+    @Column(name = "policy_name")
+    private String policyName; // New field
 
     @Column(name = "start_date")
     @NotNull(message = "Start date is required")
@@ -48,9 +46,10 @@ public class Policy {
     @Column(name = "annuity_term")
     private AnnuityTerm annuityTerm;
 
+    // Allow customer to be nullable since policy isn’t linked yet
     @JsonBackReference(value="customer-policies")
     @ManyToOne
-    @JoinColumn(name = "customer_id", nullable = false)
+    @JoinColumn(name = "customer_id", nullable = true)
     private Customer customer;
     
     @JsonBackReference(value="scheme-policies")
@@ -66,88 +65,74 @@ public class Policy {
         ACTIVE, INACTIVE
     }
 
-    public enum AnnuityTerm {
-        QUARTERLY, HALF_YEARLY, ANNUAL, ONE_TIME
-    }
+    // Getters and Setters
 
     public String getPolicyId() {
         return policyId;
     }
-
     public void setPolicyId(String policyId) {
         this.policyId = policyId;
+    }
+
+    public String getPolicyName() {
+        return policyName;
+    }
+    public void setPolicyName(String policyName) {
+        this.policyName = policyName;
     }
 
     public LocalDate getStartDate() {
         return startDate;
     }
-
     public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
-
     public Double getTotalPremiumAmount() {
         return totalPremiumAmount;
     }
-
     public void setTotalPremiumAmount(Double totalPremiumAmount) {
         this.totalPremiumAmount = totalPremiumAmount;
     }
-
     public Double getMaturityAmount() {
         return maturityAmount;
     }
-
     public void setMaturityAmount(Double maturityAmount) {
         this.maturityAmount = maturityAmount;
     }
-
     public Integer getPolicyTerm() {
         return policyTerm;
     }
-
     public void setPolicyTerm(Integer policyTerm) {
         this.policyTerm = policyTerm;
     }
-
     public PolicyStatus getPolicyStatus() {
         return policyStatus;
     }
-
     public void setPolicyStatus(PolicyStatus policyStatus) {
         this.policyStatus = policyStatus;
     }
-
     public AnnuityTerm getAnnuityTerm() {
         return annuityTerm;
     }
-
     public void setAnnuityTerm(AnnuityTerm annuityTerm) {
         this.annuityTerm = annuityTerm;
     }
-
     public Customer getCustomer() {
         return customer;
     }
-
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }
-
-    public List<Payment> getPayments() {
-        return payments;
-    }
-
-    public void setPayments(List<Payment> payments) {
-        this.payments = payments;
-    }
-    
     public Scheme getScheme() {
         return scheme;
     }
-
     public void setScheme(Scheme scheme) {
         this.scheme = scheme;
     }
-
+    public List<Payment> getPayments() {
+        return payments;
+    }
+    public void setPayments(List<Payment> payments) {
+        this.payments = payments;
+    }
 }

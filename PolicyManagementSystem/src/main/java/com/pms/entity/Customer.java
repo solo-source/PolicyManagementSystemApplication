@@ -55,10 +55,10 @@ public class Customer {
     private String password;
 
     @Column(name="verified")
-    private boolean verified;
+    private Boolean verified;
 
     @Column(name="active")
-    private boolean active;
+    private Boolean active;
 
 
     @JsonManagedReference(value="customer-policies")

@@ -1,9 +1,7 @@
 package com.pms.exception;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -19,21 +17,19 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleMethodArgsNotValidException(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
-
-        ex.getBindingResult().getAllErrors().forEach((error)->{
-        	String fieldName=((FieldError)error).getField();
-        	String message=error.getDefaultMessage();
-        	errors.put(fieldName, message);
-        	
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String message = error.getDefaultMessage();
+            errors.put(fieldName, message);
         });
-        return new ResponseEntity<Map<String,String>>(errors,HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
     
     @ExceptionHandler(InvalidEntityException.class)
     public ResponseEntity<Map<String, String>> handleInvalidEntityException(InvalidEntityException ex) {
         Map<String, String> err = new HashMap<>();
         err.put("error", ex.getMessage());
-        return new ResponseEntity<Map<String,String>>(err,HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(err, HttpStatus.BAD_REQUEST);
     }
 
     // Handle unexpected errors
