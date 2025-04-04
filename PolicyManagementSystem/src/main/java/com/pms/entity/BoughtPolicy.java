@@ -10,7 +10,7 @@ public class BoughtPolicy {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private String boughtPolicyId;
+    private Long boughtPolicyId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "policy_id", nullable = false)
@@ -41,11 +41,11 @@ public class BoughtPolicy {
     private AnnuityTerm annuityTerm;
 
     // Getters and Setters
-    public String getBoughtPolicyId() {
+    public Long getBoughtPolicyId() {
         return boughtPolicyId;
     }
 
-    public void setBoughtPolicyId(String boughtPolicyId) {
+    public void setBoughtPolicyId(Long boughtPolicyId) {
         this.boughtPolicyId = boughtPolicyId;
     }
 

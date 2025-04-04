@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public class BoughtPolicy {
 
-    private String boughtPolicyId;
+    private Long boughtPolicyId;
     private Policy policy;
     private Customer customer;
     private LocalDate startDate;
@@ -14,11 +14,11 @@ public class BoughtPolicy {
     private Policy.PolicyStatus policyStatus;
     private Policy.AnnuityTerm annuityTerm;
 
-    public String getBoughtPolicyId() {
+    public Long getBoughtPolicyId() {
         return boughtPolicyId;
     }
 
-    public void setBoughtPolicyId(String boughtPolicyId) {
+    public void setBoughtPolicyId(Long boughtPolicyId) {
         this.boughtPolicyId = boughtPolicyId;
     }
 

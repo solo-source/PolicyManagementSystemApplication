@@ -381,7 +381,7 @@ public class CustomerUIController {
 
 	
 	@GetMapping("/viewCustPolicyDetails")
-	public String showCustPolicyDetails(@RequestParam("policyId") String policyId, Model model) {
+	public String showCustPolicyDetails(@RequestParam("policyId") Long policyId, Model model) {
 	    // Prepare a BoughtPolicy instance with the policy identifier (or adjust based on your logic)
 	    BoughtPolicy bp = new BoughtPolicy();
 	    bp.setBoughtPolicyId(policyId);

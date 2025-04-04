@@ -204,7 +204,7 @@ public class PolicyService {
     }
     
     // Updated updateBoughtPolicy method using the proper identifier field and allowed fields.
-    public BoughtPolicy updateBoughtPolicy(String id, BoughtPolicy boughtPolicyDetails) throws InvalidEntityException {
+    public BoughtPolicy updateBoughtPolicy(Long id, BoughtPolicy boughtPolicyDetails) throws InvalidEntityException {
         // Retrieve the existing bought policy record by its id.
         BoughtPolicy existingBoughtPolicy = boughtPolicyRepo.findById(id)
                 .orElseThrow(() -> new InvalidEntityException("Bought Policy not found with id " + id));
@@ -267,4 +267,35 @@ public class PolicyService {
 
         return boughtPolicyRepo.save(existingBoughtPolicy);
     }
+    
+
+public BoughtPolicy[] getBoughtPoliciesByCustomerId(String customerId) {
+    // Assuming your repository has a method: List<BoughtPolicy> findByCustomerId(String customerId)
+    List<BoughtPolicy> policies = boughtPolicyRepo.findByCustomerId(customerId);
+    return policies.toArray(new BoughtPolicy[0]);
+}
+
+public BoughtPolicy[] getBoughtPoliciesByScheme(String schemeName) {
+    // Assuming your repository has a method: List<BoughtPolicy> findBySchemeName(String schemeName)
+    List<BoughtPolicy> policies = boughtPolicyRepo.findBySchemeName(schemeName);
+    return policies.toArray(new BoughtPolicy[0]);
+}
+
+public BoughtPolicy[] getBoughtPoliciesByTerm(Integer policyTerm) {
+    // Assuming your repository has a method: List<BoughtPolicy> findByPolicyTerm(Integer policyTerm)
+    List<BoughtPolicy> policies = boughtPolicyRepo.findByPolicyTerm(policyTerm);
+    return policies.toArray(new BoughtPolicy[0]);
+}
+
+public BoughtPolicy[] getBoughtPoliciesByMaturityRange(Double min, Double max) {
+    // Assuming your repository has a method: List<BoughtPolicy> findByMaturityAmountBetween(Double min, Double max)
+    List<BoughtPolicy> policies = boughtPolicyRepo.findByMaturityAmountBetween(min, max);
+    return policies.toArray(new BoughtPolicy[0]);
+}
+
+public BoughtPolicy[] getBoughtPoliciesByPremiumRange(Double min, Double max) {
+    // Assuming your repository has a method: List<BoughtPolicy> findByTotalPremiumAmountBetween(Double min, Double max)
+    List<BoughtPolicy> policies = boughtPolicyRepo.findByTotalPremiumAmountBetween(min, max);
+    return policies.toArray(new BoughtPolicy[0]);
+}
 }
