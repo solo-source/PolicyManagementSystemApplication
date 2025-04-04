@@ -135,4 +135,10 @@ public class PolicyController {
         BoughtPolicy[] policies = service.getBoughtPoliciesByPremiumRange(min, max);
         return ResponseEntity.ok(policies);
     }
+    
+    @GetMapping("/bought/{policyId}")
+    public ResponseEntity<BoughtPolicy> getBoughtPoliciesByPolicyId(@PathVariable Long policyId ) {
+    		BoughtPolicy policies = service.getBoughtPoliciesByPolicyId(policyId);
+    		return ResponseEntity.ok(policies);
+    }
 }

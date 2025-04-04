@@ -75,7 +75,8 @@
 	        <p><strong>Annuity Term:</strong> <span th:text="${boughtPolicy.annuityTerm}"></span></p>
 	    </div>
 	    <span class="back-button" onclick="goBack()">Back</span>
-	    <a class="back-button">Claim</a>
+	    <!--<a th:href="@{/claims/view}" class="back-button">View Claims</a>-->
+		<!--<a th:href="@{/index}" target="contentFrame">Claims</a>-->
 	</div>
 
 	<div class="container" th:if="${boughtPolicy == null}">
