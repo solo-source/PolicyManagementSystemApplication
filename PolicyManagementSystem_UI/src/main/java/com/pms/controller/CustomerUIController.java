@@ -387,9 +387,8 @@ public class CustomerUIController {
 	    bp.setBoughtPolicyId(policyId);
 	    
 	    // Call the backend endpoint that returns a BoughtPolicy.
-	    ResponseEntity<BoughtPolicy> response = restTemplate.postForEntity(
-	        BASE_URL + "/policy/viewPolicyDetails",
-	        bp,
+	    ResponseEntity<BoughtPolicy> response = restTemplate.getForEntity(
+	        BASE_URL + "/policy/bought/" + policyId,
 	        BoughtPolicy.class
 	    );
 	    
@@ -401,9 +400,9 @@ public class CustomerUIController {
 	
 	@GetMapping("/viewSchemesInCustDashboard")
 	public String viewSchemesInCustDashboard(Model model) {
-		ResponseEntity<List> response = restTemplate.getForEntity(BASE_URL + "/scheme/viewSchemes", List.class);
+		ResponseEntity<List> response = restTemplate.getForEntity(BASE_URL + "/api/schemes/viewSchemes", List.class);
 	    model.addAttribute("schemes", response.getBody());
-	    return "CustSchemesList";
+	    return "adminSchemesList";
 	}
 	@GetMapping("/viewCustPoliciesInScheme")
 	public String showCustPoliciesInScheme(Model model, @RequestParam("schemeId") int schemeId) {

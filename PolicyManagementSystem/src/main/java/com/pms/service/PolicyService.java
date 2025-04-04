@@ -298,4 +298,9 @@ public BoughtPolicy[] getBoughtPoliciesByPremiumRange(Double min, Double max) {
     List<BoughtPolicy> policies = boughtPolicyRepo.findByTotalPremiumAmountBetween(min, max);
     return policies.toArray(new BoughtPolicy[0]);
 }
+
+public BoughtPolicy getBoughtPoliciesByPolicyId(Long policyId) {
+	// TODO Auto-generated method stub
+	return boughtPolicyRepo.findById(policyId).get();
+}
 }
