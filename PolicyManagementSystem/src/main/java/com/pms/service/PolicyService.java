@@ -269,38 +269,50 @@ public class PolicyService {
     }
     
 
-public BoughtPolicy[] getBoughtPoliciesByCustomerId(String customerId) {
-    // Assuming your repository has a method: List<BoughtPolicy> findByCustomerId(String customerId)
-    List<BoughtPolicy> policies = boughtPolicyRepo.findByCustomerId(customerId);
-    return policies.toArray(new BoughtPolicy[0]);
-}
+    public BoughtPolicy[] getBoughtPoliciesByCustomerId(String customerId) throws InvalidEntityException {
+        List<BoughtPolicy> policies = boughtPolicyRepo.findByCustomerId(customerId);
+        // Throw an exception if the list is empty
+        List<BoughtPolicy> validPolicies = Optional.ofNullable(policies)
+            .filter(list -> !list.isEmpty())
+            .orElseThrow(() -> new InvalidEntityException("No policies found for customer id: " + customerId));
+        return validPolicies.toArray(new BoughtPolicy[0]);
+    }
 
-public BoughtPolicy[] getBoughtPoliciesByScheme(String schemeName) {
-    // Assuming your repository has a method: List<BoughtPolicy> findBySchemeName(String schemeName)
-    List<BoughtPolicy> policies = boughtPolicyRepo.findBySchemeName(schemeName);
-    return policies.toArray(new BoughtPolicy[0]);
-}
+    public BoughtPolicy[] getBoughtPoliciesByScheme(String schemeName) throws InvalidEntityException {
+        List<BoughtPolicy> policies = boughtPolicyRepo.findBySchemeName(schemeName);
+        List<BoughtPolicy> validPolicies = Optional.ofNullable(policies)
+            .filter(list -> !list.isEmpty())
+            .orElseThrow(() -> new InvalidEntityException("No policies found for scheme: " + schemeName));
+        return validPolicies.toArray(new BoughtPolicy[0]);
+    }
 
-public BoughtPolicy[] getBoughtPoliciesByTerm(Integer policyTerm) {
-    // Assuming your repository has a method: List<BoughtPolicy> findByPolicyTerm(Integer policyTerm)
-    List<BoughtPolicy> policies = boughtPolicyRepo.findByPolicyTerm(policyTerm);
-    return policies.toArray(new BoughtPolicy[0]);
-}
+    public BoughtPolicy[] getBoughtPoliciesByTerm(Integer policyTerm) throws InvalidEntityException {
+        List<BoughtPolicy> policies = boughtPolicyRepo.findByPolicyTerm(policyTerm);
+        List<BoughtPolicy> validPolicies = Optional.ofNullable(policies)
+            .filter(list -> !list.isEmpty())
+            .orElseThrow(() -> new InvalidEntityException("No policies found for term: " + policyTerm));
+        return validPolicies.toArray(new BoughtPolicy[0]);
+    }
 
-public BoughtPolicy[] getBoughtPoliciesByMaturityRange(Double min, Double max) {
-    // Assuming your repository has a method: List<BoughtPolicy> findByMaturityAmountBetween(Double min, Double max)
-    List<BoughtPolicy> policies = boughtPolicyRepo.findByMaturityAmountBetween(min, max);
-    return policies.toArray(new BoughtPolicy[0]);
-}
+    public BoughtPolicy[] getBoughtPoliciesByMaturityRange(Double min, Double max) throws InvalidEntityException {
+        List<BoughtPolicy> policies = boughtPolicyRepo.findByMaturityAmountBetween(min, max);
+        List<BoughtPolicy> validPolicies = Optional.ofNullable(policies)
+            .filter(list -> !list.isEmpty())
+            .orElseThrow(() -> new InvalidEntityException("No policies found in maturity range: " + min + " to " + max));
+        return validPolicies.toArray(new BoughtPolicy[0]);
+    }
 
-public BoughtPolicy[] getBoughtPoliciesByPremiumRange(Double min, Double max) {
-    // Assuming your repository has a method: List<BoughtPolicy> findByTotalPremiumAmountBetween(Double min, Double max)
-    List<BoughtPolicy> policies = boughtPolicyRepo.findByTotalPremiumAmountBetween(min, max);
-    return policies.toArray(new BoughtPolicy[0]);
-}
+    public BoughtPolicy[] getBoughtPoliciesByPremiumRange(Double min, Double max) throws InvalidEntityException {
+        List<BoughtPolicy> policies = boughtPolicyRepo.findByTotalPremiumAmountBetween(min, max);
+        List<BoughtPolicy> validPolicies = Optional.ofNullable(policies)
+            .filter(list -> !list.isEmpty())
+            .orElseThrow(() -> new InvalidEntityException("No policies found in premium range: " + min + " to " + max));
+        return validPolicies.toArray(new BoughtPolicy[0]);
+    }
 
-public BoughtPolicy getBoughtPoliciesByPolicyId(Long policyId) {
-	// TODO Auto-generated method stub
-	return boughtPolicyRepo.findById(policyId).get();
-}
+    public BoughtPolicy getBoughtPoliciesByPolicyId(Long policyId) throws InvalidEntityException {
+        return boughtPolicyRepo.findById(policyId)
+            .orElseThrow(() -> new InvalidEntityException("Policy with id " + policyId + " not found"));
+    }
+
 }
