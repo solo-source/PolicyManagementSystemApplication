@@ -12,7 +12,42 @@
 <body>
 <div class="container custom-container">
     <h2 class="text-center mb-4">View Bought Policies Dashboard</h2>
-    <div class="row row-cols-1 row-cols-md-2 g-4">
+    
+    <!-- Display error message if exists -->
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+    
+    <!-- Display search results if available -->
+    <div th:if="${policies != null}">
+        <h4 class="mt-4">Search Results:</h4>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Policy ID</th>
+                    <th>Policy Name</th>
+                    <th>Policy Term</th>
+                    <th>Total Premium</th>
+                    <th>Maturity Amount</th>
+                    <th>Start Date</th>
+                    <th>Status</th>
+                    <!-- Add more columns as needed -->
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="bp : ${policies}">
+                    <td th:text="${bp.policy.policyId}">Policy ID</td>
+                    <td th:text="${bp.policy.policyName}">Policy Name</td>
+                    <td th:text="${bp.policy.policyTerm}">Term</td>
+                    <td th:text="${bp.totalPremiumAmount}">Premium</td>
+                    <td th:text="${bp.maturityAmount}">Maturity</td>
+                    <td th:text="${bp.startDate}">Start Date</td>
+                    <td th:text="${bp.policy.policyStatus}">Status</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <!-- Dashboard cards -->
+    <div class="row row-cols-1 row-cols-md-2 g-4 mt-4">
         <!-- Card: View by Customer ID -->
         <div class="col">
             <div class="card dashboard-card" onclick="location.href='/policy-management/view-bought-by-customerId'">

@@ -103,4 +103,36 @@ public class PolicyController {
         BoughtPolicy savedPolicy = service.buyPolicy(policyId, customerId);
         return ResponseEntity.ok(savedPolicy);
     }
+    
+    @GetMapping("/bought/customer/{customerId}")
+    public ResponseEntity<BoughtPolicy[]> getBoughtPoliciesByCustomerId(@PathVariable String customerId) {
+        BoughtPolicy[] policies = service.getBoughtPoliciesByCustomerId(customerId);
+        return ResponseEntity.ok(policies);
+    }
+    
+    @GetMapping("/bought/scheme/{schemeName}")
+    public ResponseEntity<BoughtPolicy[]> getBoughtPoliciesByScheme(@PathVariable String schemeName) {
+        BoughtPolicy[] policies = service.getBoughtPoliciesByScheme(schemeName);
+        return ResponseEntity.ok(policies);
+    }
+    
+    @GetMapping("/bought/term/{policyTerm}")
+    public ResponseEntity<BoughtPolicy[]> getBoughtPoliciesByTerm(@PathVariable Integer policyTerm) {
+        BoughtPolicy[] policies = service.getBoughtPoliciesByTerm(policyTerm);
+        return ResponseEntity.ok(policies);
+    }
+    
+    @GetMapping("/bought/maturity")
+    public ResponseEntity<BoughtPolicy[]> getBoughtPoliciesByMaturityRange(@RequestParam("min") Double min,
+                                                                           @RequestParam("max") Double max) {
+        BoughtPolicy[] policies = service.getBoughtPoliciesByMaturityRange(min, max);
+        return ResponseEntity.ok(policies);
+    }
+    
+    @GetMapping("/bought/premium")
+    public ResponseEntity<BoughtPolicy[]> getBoughtPoliciesByPremiumRange(@RequestParam("min") Double min,
+                                                                          @RequestParam("max") Double max) {
+        BoughtPolicy[] policies = service.getBoughtPoliciesByPremiumRange(min, max);
+        return ResponseEntity.ok(policies);
+    }
 }
