@@ -108,6 +108,7 @@
     <div th:if="${feedbackList}" class="feedback-details">
       <h3>Feedback List</h3>
       <div th:each="feedback : ${feedbackList}">
+		<p><strong>Name:</strong> <span th:text="${feedback.customer.name}"></span></p>
         <p><strong>Rating:</strong> <span th:text="${feedback.rating}"></span></p>
         <p><strong>Comments:</strong> <span th:text="${feedback.comments}"></span></p>
         <p><strong>Status:</strong> <span th:text="${feedback.status}"></span></p>

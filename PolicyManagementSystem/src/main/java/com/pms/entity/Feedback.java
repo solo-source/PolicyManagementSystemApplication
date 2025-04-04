@@ -1,6 +1,7 @@
 package com.pms.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Entity;
@@ -21,7 +22,6 @@ public class Feedback {
     @JoinColumn(name = "scheme_id")
     private Scheme scheme;
 
-    @JsonBackReference(value="customer-feedbacks")
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;

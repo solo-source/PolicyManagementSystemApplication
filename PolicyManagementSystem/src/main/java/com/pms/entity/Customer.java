@@ -66,11 +66,6 @@ public class Customer {
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BoughtPolicy> policies;
 
-    @JsonManagedReference(value="customer-feedbacks")
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Feedback> feedbacks;
-
-
     @JsonManagedReference(value="customer-payments")
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Payment> payments;
@@ -152,14 +147,6 @@ public class Customer {
     public void setPolicies(List<BoughtPolicy> policies) {
         this.policies = policies;
     }
-
-    public List<Feedback> getFeedbacks() {
-        return feedbacks;
-    }
-    public void setFeedbacks(List<Feedback> feedbacks) {
-        this.feedbacks = feedbacks;
-    }
-
     public List<Payment> getPayments() {
         return payments;
     }
