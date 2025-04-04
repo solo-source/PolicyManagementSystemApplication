@@ -69,6 +69,10 @@ public class Customer {
     @JsonManagedReference(value="customer-payments")
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Payment> payments;
+    
+    @JsonIgnore
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Feedback> feedbacks;
 
     // Getters and Setters
     public String getId() {
