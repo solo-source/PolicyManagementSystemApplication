@@ -402,8 +402,12 @@ public class CustomerUIController {
 	public String viewSchemesInCustDashboard(Model model) {
 		ResponseEntity<List> response = restTemplate.getForEntity(BASE_URL + "/api/schemes/viewSchemes", List.class);
 	    model.addAttribute("schemes", response.getBody());
-	    return "adminSchemesList";
+	   //new change
+	    return "CustSchemesList";
 	}
+	 
+	
+
 	@GetMapping("/viewCustPoliciesInScheme")
 	public String showCustPoliciesInScheme(Model model, @RequestParam("schemeId") int schemeId) {
 		Scheme s=new Scheme();

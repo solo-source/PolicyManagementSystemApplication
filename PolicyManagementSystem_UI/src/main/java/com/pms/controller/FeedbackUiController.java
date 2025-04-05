@@ -22,6 +22,11 @@ public class FeedbackUiController {
     
     @Autowired
     private RestTemplate restTemplate;
+    @GetMapping
+    public String feedbackHome() {
+        return "feedbackindex";
+    }
+
     
     @GetMapping("/submit")
     public String showSubmitForm(Model model) {
@@ -32,7 +37,7 @@ public class FeedbackUiController {
         return "submit-feedback";
     }
     
-    @PostMapping("/submit")
+   /* @PostMapping("/submit")
     public String submitFeedback(@ModelAttribute Feedback feedback, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "submit-feedback";
@@ -48,7 +53,34 @@ public class FeedbackUiController {
             model.addAttribute("error", "Unexpected error: " + e.getMessage());
             return "submit-feedback";
         }
+    }*/
+    @PostMapping("/submit")
+    public String submitFeedback(@ModelAttribute Feedback feedback, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "submit-feedback";
+        }
+        try {
+            ResponseEntity<?> response = restTemplate.postForEntity(BASE_URL + "/submit", feedback, Object.class);
+            
+            // ✅ Clear form by resetting feedback object
+            Feedback clearedFeedback = new Feedback();
+            clearedFeedback.setScheme(new Scheme());
+            clearedFeedback.setCustomer(new Customer());
+
+            model.addAttribute("feedback", clearedFeedback); // add new cleared object
+            model.addAttribute("message", "Feedback submitted successfully!");
+            
+            return "submit-feedback"; // stay on same page with cleared form
+        } catch (HttpClientErrorException e) {
+            model.addAttribute("error", e.getResponseBodyAsString());
+            return "submit-feedback";
+        } catch (Exception e) {
+            model.addAttribute("error", "Unexpected error: " + e.getMessage());
+            return "submit-feedback";
+        }
     }
+   
+
     
     
     @GetMapping("/update")
@@ -65,6 +97,8 @@ public class FeedbackUiController {
         model.addAttribute("feedback", feedback);
         return "update-feedback";
     }
+   
+
     
     @PostMapping("/update")
     public String updateFeedback(@ModelAttribute Feedback feedback, BindingResult bindingResult, Model model) {
@@ -89,8 +123,10 @@ public class FeedbackUiController {
             return "update-feedback";
         }
     }
+   
     
-    //The above methods are commented to resolve the compilation errors. Please make correction to the above methods
+    
+ 
     @GetMapping("/view")
     public String viewFeedbackBySchemeAndCustomer(
             @RequestParam(required = false) Integer schemeId, 

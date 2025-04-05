@@ -80,7 +80,9 @@
         <p><strong>Benefits:</strong> <span th:text="${scheme.benefits}"></span></p>
         <p><strong>Eligibility Criteria:</strong> <span th:text="${scheme.eligibilityCriteria}"></span></p>
 		<a th:href="@{/viewCustPoliciesInScheme(schemeId=${scheme.id})}" class="btn">View Policies</a>
-		<a class="feedback-btn">Feedback</a>
+		<a th:href="@{/feedback}" class="feedback-btn">Feedback</a>
+
+
     </div>
 
    

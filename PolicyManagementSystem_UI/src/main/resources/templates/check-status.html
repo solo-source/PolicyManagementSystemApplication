@@ -1,11 +1,9 @@
-
-
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> View Your Feedback</title>
+    <title>View Your Feedback</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -86,9 +84,8 @@
             text-decoration: underline;
         }
         .error-message {
-            color:#333;
+            color: #333;
             margin-top: 10px;
-			
         }
     </style>
 </head>
@@ -97,29 +94,35 @@
     <div class="form-container">
         <form th:action="@{/feedback/view}" method="get">
             <label>Scheme ID:</label>
-            <input type="number" name="schemeId">
-			<label>Customer ID:</label>
-			            <input type="number" name="customerId">
+            <input type="text" name="schemeId" placeholder="Enter Scheme ID ">
+
+            <label>Customer ID:</label>
+            <input type="text" name="customerId" placeholder="Enter Customer ID">
+
             <button type="submit">Check Status</button>
         </form>
-        <div th:if="${error}" class="error-message">
-            <p th:text="${error}"></p>
-        </div>
+		<div th:if="${error}" class="error-message">
+		            <p th:text="${error}"></p>
+		        </div>
+
         <div th:if="${feedbackList}" class="feedback-details">
             <h3>Feedback Details</h3>
-			<div th:each="feedback : ${feedbackList}">
-			    <p><strong>Customer Name:</strong> <span th:text="${feedback.customer.name}"></span></p>
-			    <p><strong>Rating:</strong> <span th:text="${feedback.rating}"></span> ⭐</p>
-			    <p><strong>Comments:</strong> <span th:text="${feedback.comments}"></span></p>
-			    <p><strong>Status:</strong> <span th:text="${feedback.status}"></span></p> <!-- Added status -->
+            <div th:each="feedback : ${feedbackList}">
+                <p><strong>Customer Name:</strong> <span th:text="${feedback.customer.name}"></span></p>
+                <p><strong>Rating:</strong> <span th:text="${feedback.rating}"></span> ⭐</p>
+                <p><strong>Comments:</strong> <span th:text="${feedback.comments}"></span></p>
+                <p><strong>Status:</strong> <span th:text="${feedback.status}"></span></p>
+
 				<button class="update-btn"
-				        th:attr="onclick=|location.href='/feedback/update?schemeId='+${feedback.scheme.id}+'&customerId='+${feedback.customer.id}|">
+				th:attr="onclick=|location.href='/feedback/update?schemeId='+${feedback.scheme.id}+'&customerId='+${feedback.customer.id}|">
+
 				    Update
 				</button>
-			    <hr/>
-			</div>
+
+                <hr/>
+            </div>
         </div>
     </div>
-    <a th:href="@{/}" class="back-link">Back to Home</a>
+    <a th:href="@{/feedback}" class="back-link">Back to Home</a>
 </body>
 </html>
