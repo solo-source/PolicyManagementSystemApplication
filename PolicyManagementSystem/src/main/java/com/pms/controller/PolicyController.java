@@ -105,39 +105,39 @@ public class PolicyController {
     }
     
     @GetMapping("/bought/customer/{customerId}")
-    public ResponseEntity<BoughtPolicy[]> getBoughtPoliciesByCustomerId(@PathVariable String customerId) {
+    public ResponseEntity<BoughtPolicy[]> getBoughtPoliciesByCustomerId(@PathVariable String customerId) throws InvalidEntityException{
         BoughtPolicy[] policies = service.getBoughtPoliciesByCustomerId(customerId);
         return ResponseEntity.ok(policies);
     }
     
     @GetMapping("/bought/scheme/{schemeName}")
-    public ResponseEntity<BoughtPolicy[]> getBoughtPoliciesByScheme(@PathVariable String schemeName) {
+    public ResponseEntity<BoughtPolicy[]> getBoughtPoliciesByScheme(@PathVariable String schemeName) throws InvalidEntityException{
         BoughtPolicy[] policies = service.getBoughtPoliciesByScheme(schemeName);
         return ResponseEntity.ok(policies);
     }
     
     @GetMapping("/bought/term/{policyTerm}")
-    public ResponseEntity<BoughtPolicy[]> getBoughtPoliciesByTerm(@PathVariable Integer policyTerm) {
+    public ResponseEntity<BoughtPolicy[]> getBoughtPoliciesByTerm(@PathVariable Integer policyTerm) throws InvalidEntityException {
         BoughtPolicy[] policies = service.getBoughtPoliciesByTerm(policyTerm);
         return ResponseEntity.ok(policies);
     }
     
     @GetMapping("/bought/maturity")
     public ResponseEntity<BoughtPolicy[]> getBoughtPoliciesByMaturityRange(@RequestParam("min") Double min,
-                                                                           @RequestParam("max") Double max) {
+                                                                           @RequestParam("max") Double max)throws InvalidEntityException {
         BoughtPolicy[] policies = service.getBoughtPoliciesByMaturityRange(min, max);
         return ResponseEntity.ok(policies);
     }
     
     @GetMapping("/bought/premium")
     public ResponseEntity<BoughtPolicy[]> getBoughtPoliciesByPremiumRange(@RequestParam("min") Double min,
-                                                                          @RequestParam("max") Double max) {
+                                                                          @RequestParam("max") Double max) throws InvalidEntityException{
         BoughtPolicy[] policies = service.getBoughtPoliciesByPremiumRange(min, max);
         return ResponseEntity.ok(policies);
     }
     
     @GetMapping("/bought/{policyId}")
-    public ResponseEntity<BoughtPolicy> getBoughtPoliciesByPolicyId(@PathVariable Long policyId ) {
+    public ResponseEntity<BoughtPolicy> getBoughtPoliciesByPolicyId(@PathVariable Long policyId ) throws InvalidEntityException{
     		BoughtPolicy policies = service.getBoughtPoliciesByPolicyId(policyId);
     		return ResponseEntity.ok(policies);
     }
