@@ -25,13 +25,13 @@
             box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.15);
         }
         .btn-custom {
-            background-color: #28a745;
-            border-color: #28a745;
+            background-color: #3f77e3;
+            border-color: #3f77e3;
             color: white;
         }
         .btn-custom:hover {
-            background-color: #218838;
-            border-color: #1e7e34;
+            background-color: #3f77e3;
+            border-color: #3f77e3;
         }
         .profile-icon {
             width: 40px;
@@ -56,27 +56,15 @@
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-    <div class="container">
-        <a class="navbar-brand fw-bold text-dark" th:href="@{/user/dashboard}">Scheme Management System</a>
-        <div class="d-flex align-items-center gap-3">
-            <a th:href="@{/user/profile}" class="profile-icon">
-                <img src="profile-icon.png" alt="Profile">
-            </a>
-            <a th:href="@{/logout}" class="btn btn-danger">Logout</a>
-        </div>
-    </div>
-</nav>
-
 <!-- Dashboard Content -->
 <main class="container py-5">
-    <h2 class="text-center mb-4">Welcome to Your Dashboard</h2>
+    <h2 class="text-center mb-4">Welcome to Scheme Management</h2>
     <div class="row g-4">
         <div class="col-md-6">
             <div class="card p-4 text-center">
                 <h5>View Available Schemes</h5>
                 <p>Explore various types of schemes.</p>
-                <a th:href="@{/user/schemes}" class="btn btn-custom">View Schemes</a>
+                <a th:href="@{/schemes}" class="btn btn-custom">View Schemes</a>
             </div>
         </div>
         <div class="col-md-6">
@@ -86,12 +74,6 @@
                 <a th:href="@{/user/history}" class="btn btn-custom">View History</a>
             </div>
         </div>
-<!--        <div class="col-md-6">-->
-<!--            <div class="card p-4 text-center">-->
-<!--                <h5>View Feedbacks</h5>-->
-<!--                <p>Share your thoughts and suggestions.</p>-->
-<!--                <a th:href="@{/user/feedback}" class="btn btn-custom">Give Feedback</a>-->
-<!--            </div>-->
         </div>
     </div>
 </main>

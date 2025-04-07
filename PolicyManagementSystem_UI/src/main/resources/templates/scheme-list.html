@@ -5,17 +5,26 @@
     <title>Scheme List</title>
     <style>
         /* General Styles */
+        /*body {*/
+        /*    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;*/
+        /*    margin: 0;*/
+        /*    padding: 10px;*/
+        /*    background-color: #d3d3d3; !* Grey background *!*/
+        /*    color: #333;*/
+        /*    display: flex;*/
+        /*    justify-content: center;*/
+        /*    align-items: center;*/
+        /*    min-height: 100vh;*/
+        /*}*/
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
-            padding: 10px;
-            background-color: #d3d3d3; /* Grey background */
+            padding: 20px 90px; /* Top & Bottom: 20px, Left & Right: 90px */
+            background-color: #d3d3d3;
             color: #333;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
         }
+
 
         /* Container Frame */
         .container {
@@ -29,7 +38,7 @@
         }
 
         h1 {
-            color: #2e7d32; /* Changed Admin Dashboard to Green */
+            color: #3f77e3; /* Changed Admin Dashboard to Green */
             margin: 0 0 20px 0;
             font-size: 28px;
             text-align: center;
@@ -37,7 +46,7 @@
 
         /* Button Styles */
         .btn {
-            background-color: #2e7d32; /* Changed Create New Scheme button to Green */
+            background-color: #3f77e3; /* Changed Create New Scheme button to Green */
             border: none;
             color: white;
             padding: 12px 24px;
@@ -53,7 +62,7 @@
         }
 
         .btn:hover {
-            background-color: #256429; /* Slightly darker green */
+            background-color: #3f77e3; /* Slightly darker green */
         }
 
         /* Table Styles */
@@ -73,7 +82,7 @@
         }
 
         th {
-            background-color: #2e7d32; /* Green */
+            background-color: #3f77e3; /* Green */
             color: white;
             font-weight: 600;
             text-transform: uppercase;
@@ -86,7 +95,7 @@
 
         /* Status Styles */
         .status-active {
-            color: #27ae60; /* Green */
+            color: #3f77e3; /* Green */
             font-weight: 500;
         }
 
@@ -98,14 +107,14 @@
         /* Actions Column */
         .actions a {
             margin-right: 10px;
-            color: #2e7d32; /* Green */
+            color: #3f77e3; /* Green */
             text-decoration: none;
             font-weight: 500;
             transition: color 0.3s ease;
         }
 
         .actions a:hover {
-            color: #1e5e21; /* Darker Green */
+            color: #3f77e3; /* Darker Green */
             text-decoration: underline;
         }
 
@@ -118,7 +127,7 @@
         }
 
         .toggle-link.active {
-            color: #27ae60; /* Green for Active */
+            color: #3f77e3; /* Green for Active */
         }
 
         .toggle-link.inactive {
@@ -132,7 +141,7 @@
 </head>
 <body>
 <div class="container">
-    <h1>Admin Dashboard</h1>
+<!--    <h1>Admin Dashboard</h1>-->
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
 
 
@@ -152,15 +161,11 @@
             <button type="submit" class="btn">Search by Name</button>
         </form>
 
-        <a th:if="${schemes.size() == 1 || schemes.isEmpty()}" th:href="@{/schemes}"
+        <a th:if="${schemes.isEmpty()}" th:href="@{/schemes}"
            class="btn"
            style="background-color: #e74c3c; padding: 10px 20px; text-decoration: none; color: white; border-radius: 5px; cursor: pointer;">
             Back to Dashboard
         </a>
-
-<!--        <a th:if="${#lists.isEmpty(schemes) || schemes.size() == 1}" th:href="@{/schemes}" class="btn" style="background-color: #e74c3c;">-->
-<!--            Back to Dashboard-->
-<!--        </a>-->
 
     </div>
 
@@ -183,7 +188,7 @@
             <th>Details</th>
             <th>Status</th>
             <th class="actions">Actions</th>
-<!--            <th>View Policies</th>          //goes to admin page of policies-->
+            <th>Policies</th>
 <!--            <th>View Feedbacks</th>         //goes to admin page of feedbacks-->
         </tr>
         </thead>
@@ -205,9 +210,11 @@
             </td>
 
 <!--            &lt;!&ndash; ✅ Added missing <td> for Policies and Feedbacks &ndash;&gt;-->
-<!--            <td>-->
+            <td>
 <!--                <a th:href="@{/admin/policies/{id}(id=${scheme.id})}">View Policies</a>-->
-<!--            </td>-->
+                <a th:href="@{/viewAdminPoliciesInScheme(schemeId=${scheme.id})}">View Policies</a>
+
+            </td>
 <!--            <td>-->
 <!--                <a th:href="@{/admin/feedbacks/{id}(id=${scheme.id})}">View Feedbacks</a>-->
 <!--            </td>-->

@@ -238,7 +238,7 @@ public class AdminUIController {
 	public String viewSchemesInAdmin(Model model) {
 		ResponseEntity<List> response = restTemplate.getForEntity(BASE_URL + "/api/schemes/viewSchemes", List.class);
 	    model.addAttribute("schemes", response.getBody());
-	    return "adminSchemesList";
+	    return "schemeDashboard";
 	}
 	@GetMapping("/viewAdminPoliciesInScheme")
 	public String viewAdminPoliciesInScheme(Model model, @RequestParam("schemeId") int schemeId) {
