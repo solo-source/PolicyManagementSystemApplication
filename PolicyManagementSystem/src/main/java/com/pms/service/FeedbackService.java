@@ -132,20 +132,15 @@ public class FeedbackService {
         return feedbacks;
     }
     
-    public void sendFeedbackNotification(Feedback feedback) {
+    public void sendFeedbackNotification(String feedbackMessage) {
         SimpleMailMessage message = new SimpleMailMessage();
-        // Use the customer's email from the feedback object
-        message.setTo(feedback.getCustomer().getEmail());
+        message.setTo("23102081@rmd.ac.in");
         message.setSubject("Feedback Received");
-        message.setText("Dear " + feedback.getCustomer().getName() + ",\n\n"
-                + "Thank you for your feedback!\n\n"
-                + "Your comments: " + feedback.getComments() + "\n\n"
-                + "Best Regards,\nYour Company");
+        message.setText("Dear User,\n\nThank you for your feedback!\n\n" + feedbackMessage + "\n\nBest Regards,\nYour Company");
         try {
             mailSender.send(message);
         } catch (MailException e) {
             System.err.println("Failed to send email: " + e.getMessage());
         }
     }
-
 }

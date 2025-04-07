@@ -23,19 +23,17 @@ public class FeedbackController {
     @PostMapping("/submit")
     public ResponseEntity<?> submitFeedback(@Valid @RequestBody Feedback feedback) throws InvalidEntityException {
         Feedback result = feedbackService.submitFeedback(feedback);
-        // Pass the complete feedback object for the email notification
-        feedbackService.sendFeedbackNotification(result);
+        feedbackService.sendFeedbackNotification(feedback.getComments());
         return ResponseEntity.ok(result);
     }
     
-    @PostMapping("/update")
+   @PostMapping("/update")
     public ResponseEntity<?> updateFeedback(@Valid @RequestBody Feedback feedback) throws InvalidEntityException {
         Feedback result = feedbackService.updateFeedback(
             feedback.getScheme().getId(),
             feedback.getCustomer().getId(),
             feedback);
-        // Pass the complete feedback object for the email notification
-        feedbackService.sendFeedbackNotification(result);
+        feedbackService.sendFeedbackNotification(feedback.getComments());
         return ResponseEntity.ok(result);
     }
    
