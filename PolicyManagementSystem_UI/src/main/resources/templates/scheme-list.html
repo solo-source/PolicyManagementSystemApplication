@@ -141,9 +141,18 @@
 </head>
 <body>
 <div class="container">
-<!--    <h1>Admin Dashboard</h1>-->
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-
+    <h1>Admin Dashboard</h1>
+<!--    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">-->
+    <div
+            style="
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px; /* space between columns */
+    margin-bottom: 20px;
+    flex-wrap: wrap; /* allows wrapping on smaller screens */
+  "
+    >
 
         <a th:href="@{/schemes/new}" class="btn">Create New Scheme</a>
 
@@ -189,7 +198,6 @@
             <th>Status</th>
             <th class="actions">Actions</th>
             <th>Policies</th>
-<!--            <th>View Feedbacks</th>         //goes to admin page of feedbacks-->
         </tr>
         </thead>
         <tbody>
@@ -208,16 +216,10 @@
             <td class="actions">
                 <a th:href="@{/schemes/edit/{id}(id=${scheme.id})}">Edit</a>
             </td>
-
-<!--            &lt;!&ndash; ✅ Added missing <td> for Policies and Feedbacks &ndash;&gt;-->
             <td>
-<!--                <a th:href="@{/admin/policies/{id}(id=${scheme.id})}">View Policies</a>-->
                 <a th:href="@{/viewAdminPoliciesInScheme(schemeId=${scheme.id})}">View Policies</a>
-
             </td>
-<!--            <td>-->
-<!--                <a th:href="@{/admin/feedbacks/{id}(id=${scheme.id})}">View Feedbacks</a>-->
-<!--            </td>-->
+
         </tr>
         </tbody>
     </table>
