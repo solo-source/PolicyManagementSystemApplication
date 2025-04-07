@@ -403,7 +403,7 @@ public class CustomerUIController {
 		ResponseEntity<List> response = restTemplate.getForEntity(BASE_URL + "/api/schemes/viewSchemes", List.class);
 	    model.addAttribute("schemes", response.getBody());
 	   //new change
-	    return "CustSchemesList";
+		return "view-active-schemes";
 	}
 	 
 	

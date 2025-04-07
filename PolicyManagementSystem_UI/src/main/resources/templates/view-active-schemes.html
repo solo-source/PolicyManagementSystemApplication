@@ -10,14 +10,11 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
-            padding: 10px;
+            padding: 20px 90px; /* Top & Bottom: 20px, Left & Right: 90px */
             background-color: #d3d3d3;
             color: #333;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
         }
+
 
         /* Container */
         .container {
@@ -40,7 +37,7 @@
         .header h1 {
             font-size: 30px;
             font-weight: bold;
-            color: #2e7d32;
+            color: #007bff;
             margin: 0;
         }
 
@@ -73,7 +70,7 @@
         }
 
         .table thead th {
-            background-color: #2e7d32;
+            background-color: #007bff;
             color: white;
             font-weight: bold;
             text-transform: uppercase;
@@ -90,20 +87,20 @@
 
         .actions a {
             margin-right: 10px;
-            color: #2e7d32;
+            color: #007bff;
             text-decoration: none;
             font-weight: 500;
             transition: color 0.3s ease;
         }
 
         .actions a:hover {
-            color: #1e5e21;
+            color: #007bff;
             text-decoration: underline;
         }
 
         /* Button */
         .btn {
-            background-color: #2e7d32;
+            background-color: #007bff;
             border: none;
             color: white;
             padding: 10px 20px;
@@ -116,7 +113,7 @@
         }
 
         .btn:hover {
-            background-color: #256429;
+            background-color: #007bff;
         }
 
         .btn-danger {
@@ -135,11 +132,12 @@
     <div class="header">
 <!--        <div class="header">-->
             <h1 th:if="${schemes != null and schemes.size() > 1}">
-                Welcome User! <span>Check out available schemes</span>
+                Welcome! <span>Check out available schemes</span>
             </h1>
 
             <!-- Search Form: Always Visible -->
-            <form th:action="@{/user-schemes/search}" method="get" style="display: inline-block;">
+            <form th:if="${schemes != null and schemes.size() > 1}"
+                    th:action="@{/user-schemes/search}" method="get" style="display: inline-block;">
                 <input type="text" name="schemeName" placeholder="Enter Scheme Name"
                        style="padding: 5px; font-size: 14px; border-radius: 3px; border: 1px solid #ccc; width: 150px;">
                 <button type="submit" class="btn"
@@ -147,9 +145,9 @@
             </form>
 
             <!-- Back to Dashboard: Visible when schemes is null, empty, or has exactly one element -->
-            <a th:if="${schemes == null or schemes.size() == 1 or #lists.isEmpty(schemes)}"
-               th:href="@{/user-schemes}" class="btn btn-danger">
-                Back to Dashboard
+            <a th:if="${schemes.size() == 1 or #lists.isEmpty(schemes)}"
+               th:href="@{/viewSchemesInCustDashboard}" class="btn btn-danger">
+                Back
             </a>
         </div>
 
@@ -162,6 +160,8 @@
                 <th>Benefits</th>
                 <th>Eligibility</th>
                 <th>Action</th>
+<!--                <th>Policy</th>-->
+<!--                <th>Feedbacks</th>-->
             </tr>
             </thead>
             <tbody>
